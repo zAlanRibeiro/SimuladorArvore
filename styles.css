@@ -1,0 +1,150 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Container principal */
+.container {
+    width: 100%;
+    max-width: 1300px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    text-align: left;
+    border-radius: 10px 10px 0 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    width: 80px;
+    height: auto;
+    margin-right: 15px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+/* Seção de interatividade */
+.interaction-section {
+    margin: 20px 0;
+}
+
+.interaction-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.interaction-section td {
+    padding: 10px;
+}
+
+.interaction-section input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.interaction-section input[type="button"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.interaction-section input[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+/* Área da árvore */
+.tree-section {
+    margin: 20px 0;
+    text-align: center;
+}
+
+#tree-canvas {
+    background-color: #eeecfa;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Controles de animação */
+.animation-controls {
+    margin: 15px -20px;
+}
+
+.animation-controls table {
+    width: 10%;
+    border-collapse: collapse;
+}
+
+.animation-controls td {
+    padding: 10px;
+    text-align: center;
+}
+
+.animation-controls input[type="button"] {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.animation-controls input[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+/* Rodapé */
+footer {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    border-radius: 0 0 10px 10px;
+    margin-top: auto;
+}
+
+footer h2 {
+    font-size: 1.5rem;
+    margin: 0;
+}

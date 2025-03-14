@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="node_modules/d3/dist/d3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+    <title>Simulador AVL</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <img src="assets/image-removebg-preview.png" alt="Logo" class="logo">
+                <h1>Simulador AVL</h1>
+            </div>
+        </header>
+
+        <!-- Seção de interatividade -->
+        <div class="interaction-section">
+            <table>
+                <tr>
+                    <td><input type="text"  id="valor" placeholder="Inserir valor"></td>
+                    <td><input type="button" value="Inserir" onclick="validarValor()"></td>
+                    <td><input type="text"  id="valorRemove" placeholder="Remover valor"></td>
+                    <td><input type="button" value="Remover" onclick="removerValor()"></td>
+                    <td><form id="caminhoArvore"> 
+                        <input type = "radio" name="caminho" value="A">
+                        <label for="html">Pre Order</label><br>
+                        <input type = "radio" name="caminho" value="B">
+                        <label for="html">In Order</label><br>
+                        <input type = "radio" name="caminho" value="CA">
+                        <label for="html">Pos Order</label><br>
+                    </form></td>
+                    <td><input type="button" value="Consultar"></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Área da árvore -->
+        <div class="tree-section">
+            <canvas id="tree-canvas" width="1000" height="500"></canvas>
+        </div>
+
+        <!-- Controles de animação -->
+        <div class="animation-controls">
+            <table>
+                <tr>
+                    <td><input type="button" value="Skip Back"></td>
+                    <td><input type="button" value="Step Back"></td>
+                    <td><input type="button" value="Pause"></td>
+                    <td><input type="button" value="Step Forward"></td>
+                    <td><input type="button" value="Skip Forward"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <h2>TCC</h2>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
