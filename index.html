@@ -1,67 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador AVL</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
     <script src="node_modules/d3/dist/d3.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="script.js"></script>
-    <title>Simulador AVL</title>
+    <script src="js/arvoreAvl.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/percursos.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/main.js"></script>
+
 </head>
-<body>
-    <div class="container">
-        <header>
-            <div class="header-content">
+<body class="bg-light">
+    <div class="container-fluid px-5 pt-0 pb-4">
+
+        <header class="mb-4 text-center">
+            <div class="logo-wrapper">
                 <img src="assets/image-removebg-preview.png" alt="Logo" class="logo">
-                <h1>Simulador AVL</h1>
             </div>
+            <h1 class="fw-bold">Simulador de Árvore AVL</h1>
         </header>
 
-        <!-- Seção de interatividade -->
-        <div class="interaction-section">
-            <table>
-                <tr>
-                    <td><input type="text"  id="valor" placeholder="Inserir valor"></td>
-                    <td><input type="button" value="Inserir" onclick="validarValor()"></td>
-                    <td><input type="text"  id="valorRemove" placeholder="Remover valor"></td>
-                    <td><input type="button" value="Remover" onclick="removerValor()"></td>
-                    <td><form id="caminhoArvore"> 
-                        <input type = "radio" name="caminho" value="A">
-                        <label for="html">Pre Order</label><br>
-                        <input type = "radio" name="caminho" value="B">
-                        <label for="html">In Order</label><br>
-                        <input type = "radio" name="caminho" value="CA">
-                        <label for="html">Pos Order</label><br>
-                    </form></td>
-                    <td><input type="button" value="Consultar"></td>
-                </tr>
-            </table>
-        </div>
+        <main>
+            <!-- Feedback -->
+            <div id="mensagem" class="mensagem text-center mb-3"></div>
 
-        <!-- Área da árvore -->
-        <div class="tree-section">
-            <canvas id="tree-canvas" width="1000" height="500"></canvas>
-        </div>
+            <!-- Controles principais -->
+            <form class="row g-2 align-items-center mb-3" onsubmit="event.preventDefault();">
+                <div class="col-md-3">
+                    <input type="text" id="valorInserir" class="form-control" placeholder="Inserir valor">
+                </div>
+                <div class="col-md-auto">
+                    <button type="submit" class="btn btn-success" onclick="inserirValor()">Inserir</button>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="valorRemove" class="form-control" placeholder="Remover valor">
+                </div>
+                <div class="col-md-auto">
+                    <button type="submit" class="btn btn-danger" onclick="removerValor()">Remover</button>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="valorBusca" class="form-control" placeholder="Buscar valor">
+                </div>
+                <div class="col-md-auto">
+                    <button type="submit" class="btn btn-primary ms-3" onclick="executarBusca()">Buscar</button> 
+                </div>
+                <div class="col-md-auto">
+                    <button type="button" class="btn btn-primary ms-3" onclick="limparArvore()">Limpar Árvore</button>
+                </div>
+            </form>
 
-        <!-- Controles de animação -->
-        <div class="animation-controls">
-            <table>
-                <tr>
-                    <td><input type="button" value="Skip Back"></td>
-                    <td><input type="button" value="Step Back"></td>
-                    <td><input type="button" value="Pause"></td>
-                    <td><input type="button" value="Step Forward"></td>
-                    <td><input type="button" value="Skip Forward"></td>
-                </tr>
-            </table>
-        </div>
+            <!-- Percursos -->
+            <fieldset class="mb-4">
+                <legend>Tipo de Percurso</legend>
+                <div class="alert alert-success mt-3" id="caminhoBox" style="display: none;">
+                    <strong>Caminho:</strong> <span id="caminhoTexto">---</span>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="caminho" id="preOrder" value="A">
+                    <label class="form-check-label" for="preOrder">Pré-Ordem</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="caminho" id="inOrder" value="B">
+                    <label class="form-check-label" for="inOrder">In-Ordem</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="caminho" id="posOrder" value="C">
+                    <label class="form-check-label" for="posOrder">Pós-Ordem</label>
+                </div>
+                <button type="button" class="btn btn-primary ms-3" onclick="consultarCaminho()">Consultar</button>
+            </fieldset>
+
+            <!-- Canvas da Árvore -->
+            <div class="mb-4" style="overflow-x: auto;">
+                <canvas id="tree-canvas" width="1200" height="600"></canvas>
+            </div>
+
+            <!-- Controles de navegação -->
+            <div class="text-center mb-5">
+                <button class="btn btn-outline-secondary me-2" onclick="skipBack()">⏮ Início</button>
+                <button class="btn btn-outline-secondary me-2" onclick="stepBack()">◀ Passo</button>
+                <button id="pause-btn" class="btn btn-outline-secondary me-2" onclick="alternarAnimacao()">⏸ Pausar</button>
+                <button class="btn btn-outline-secondary me-2" onclick="stepForward()">Passo ▶</button>
+                <button class="btn btn-outline-secondary" onclick="skipForward()">Fim ⏭</button>
+            </div>
+        </main>
+
+        <footer class="text-center text-muted">
+            <small>Projeto de TCC - Simulador AVL</small>
+        </footer>
     </div>
-
-    <footer>
-        <h2>TCC</h2>
-    </footer>
-    <script src="script.js"></script>
 </body>
 </html>
