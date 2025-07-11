@@ -51,3 +51,22 @@ function alturaArvore(node) {
 function contarNos(node) {
     return node ? 1 + contarNos(node.left) + contarNos(node.right) : 0;
 }
+
+function desenharNoPendente(ctx, valor, x, y) {
+    const raio = 25;
+
+    // Limpa a área para o novo nó
+    ctx.clearRect(x - raio - 5, y - raio - 5, raio * 2 + 10, raio * 2 + 10);
+    
+    ctx.beginPath();
+    ctx.arc(x, y, raio, 0, 2 * Math.PI);
+    ctx.fillStyle = "gold"; // Cor para indicar que está pendente
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "black";
+    ctx.fillText(valor, x, y + 6);
+
+    ctx.font = "16px Arial";
+    ctx.fillText("Inserindo...", x, y + 50);
+    ctx.font = "20px Arial"; // Volta para a fonte padrão
+}
