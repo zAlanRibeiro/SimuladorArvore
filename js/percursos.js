@@ -71,13 +71,14 @@ async function destacarNo(node, x, y, controller) {
     drawHighlight("limegreen");
 
     // Pausa pausavel e pulavel
-    let remaining = 500;
-    while (remaining > 0) {
+    let logicalTimeRemaining = 500;
+    const stepInterval = 50;
+    while (logicalTimeRemaining > 0) {
         if (controller && controller.skip) return;
         if (!animacaoPausada) {
-            remaining -= 50;
+            logicalTimeRemaining -= stepInterval * animationSpeedMultiplier;
         }
-        await new Promise(r => setTimeout(r, 50));
+        await new Promise(r => setTimeout(r, stepInterval));
     }
 
     drawHighlight("lightblue");

@@ -10,6 +10,9 @@ class Node {
 class AVLTree {
     constructor() {
         this.root = null;
+        this.PENDING_NODE_X = 80;
+        this.PENDING_NODE_Y = 70;
+        this.lastOperationSuccess = true;
     }
 
     height(node) {
@@ -67,8 +70,9 @@ class AVLTree {
         else {
             if (!node.left) return node.right;
             if (!node.right) return node.left;
-            node.value = this.minValueNode(node.right).value;
-            node.right = this.removeNode(node.right, node.value);
+            let temp = this.minValueNode(node.right);
+            node.value = temp.value;
+            node.right = this.removeNode(node.right, temp.value);
         }
         if (node == null) return node;
         node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
@@ -85,7 +89,7 @@ class AVLTree {
         }
         return node;
     }
-
+    
     minValueNode(node) {
         let current = node;
         while (current.left !== null) {
@@ -95,71 +99,84 @@ class AVLTree {
     }
 
     async buscaBinaria(node, value, x, y, nivel, controller) {
-        if (!node || (controller && controller.skip)) return;
+        if (!node || (controller && controller.skip)) {
+            if (!node) setSubtitle(`Valor ${value} não encontrado.`);
+            return;
+        };
+        
+        setSubtitle(`Procurando... Comparando ${value} com ${node.value}.`);
         await destacarNo(node, x, y, controller);
+
         if (value === node.value) {
-            exibirMensagem("sucesso", `Valor ${value} encontrado na árvore!`);
+            setSubtitle(`Valor ${value} encontrado!`);
             return;
         }
+
         const deslocamento = document.getElementById('tree-canvas').width / Math.pow(2, nivel + 2);
         if (value < node.value) {
+            setSubtitle(`${value} < ${node.value}. Indo para a esquerda.`);
+            await this.pausableDelay(800, controller);
             await this.buscaBinaria(node.left, value, x - deslocamento, y + 80, nivel + 1, controller);
         } else {
+            setSubtitle(`${value} > ${node.value}. Indo para a direita.`);
+            await this.pausableDelay(800, controller);
             await this.buscaBinaria(node.right, value, x + deslocamento, y + 80, nivel + 1, controller);
         }
     }
 
     async insertValueAnimado(value, controller) {
+        this.lastOperationSuccess = true; // Reseta o status
         const canvas = document.getElementById('tree-canvas');
         const ctx = canvas.getContext('2d');
-        desenharNoPendente(ctx, value, 50, 50);
-        await this.pausableDelay(500, controller);
+        setSubtitle(`Inserindo o valor ${value}...`);
+        desenharNoPendente(ctx, value, this.PENDING_NODE_X, this.PENDING_NODE_Y, "Inserindo...");
+        await this.pausableDelay(1000, controller);
         if (controller.skip) return;
-        this.root = await this.insertAnimadoRecursivo(this.root, value, canvas.width / 2, 60, 0, controller);
+        const path = [];
+        this.root = await this.insertAnimadoRecursivo(this.root, value, canvas.width / 2, 60, 0, controller, path);
     }
     
     async pausableDelay(ms, controller) {
-        let remaining = ms;
-        while (remaining > 0) {
+        let logicalTimeRemaining = ms;
+        const stepInterval = 50;
+
+        while (logicalTimeRemaining > 0) {
             if (controller.skip) return;
             if (!animacaoPausada) {
-                const delay = Math.min(remaining, 50);
-                await new Promise(r => setTimeout(r, delay));
-                remaining -= delay;
-            } else {
-                await new Promise(r => setTimeout(r, 50));
+                logicalTimeRemaining -= stepInterval * animationSpeedMultiplier;
             }
+            await new Promise(r => setTimeout(r, stepInterval));
         }
     }
 
     async animateNodeFlight(startX, startY, endX, endY, value, controller) {
-        const duration = 500;
-        let startTime = null;
-        let timeSpentPaused = 0;
-        let lastPauseTime = null;
+        const baseDuration = 800;
+        let progress = 0;
+        let lastFrameTime = null;
+        
         return new Promise(resolve => {
             const step = (currentTime) => {
                 if (controller.skip) { resolve(); return; }
-                if (animacaoPausada) {
-                    if (lastPauseTime === null) lastPauseTime = currentTime;
-                    requestAnimationFrame(step);
-                    return;
+                if (lastFrameTime === null) lastFrameTime = currentTime;
+
+                const deltaTime = currentTime - lastFrameTime;
+                lastFrameTime = currentTime;
+
+                if (!animacaoPausada) {
+                    progress += (deltaTime / baseDuration) * animationSpeedMultiplier;
                 }
-                if (lastPauseTime !== null) {
-                    timeSpentPaused += (currentTime - lastPauseTime);
-                    lastPauseTime = null;
-                }
-                if (startTime === null) startTime = currentTime;
-                const elapsedTime = currentTime - startTime - timeSpentPaused;
-                const progress = Math.min(elapsedTime / duration, 1);
+                if (progress >= 1) progress = 1;
+
                 const easeOutQuad = t => t * (2 - t);
                 const easedProgress = easeOutQuad(progress);
                 const currentX = startX + (endX - startX) * easedProgress;
                 const currentY = startY + (endY - startY) * easedProgress;
+                
                 desenharArvore(this.root);
                 const canvas = document.getElementById('tree-canvas');
                 const ctx = canvas.getContext('2d');
-                this.drawNode(ctx, currentX, currentY, value, "springgreen");
+                this.drawNode(ctx, currentX, currentY, value, "springgreen", 1);
+                
                 if (progress < 1) {
                     requestAnimationFrame(step);
                 } else {
@@ -170,29 +187,59 @@ class AVLTree {
         });
     }
 
-    async insertAnimadoRecursivo(node, value, x, y, nivel, controller) {
+    async insertAnimadoRecursivo(node, value, x, y, nivel, controller, path) {
+        path.push({node, x, y});
         if (controller.skip) return node;
         if (!node) {
-            await this.animateNodeFlight(50, 50, x, y, value, controller);
+            setSubtitle(`Posição encontrada. Inserindo nó ${value}.`);
+            await this.animateNodeFlight(this.PENDING_NODE_X, this.PENDING_NODE_Y, x, y, value, controller);
             return controller.skip ? null : new Node(value);
         }
         if (value === node.value) {
-            exibirMensagem("erro", `O valor ${value} já existe na árvore.`);
+            setSubtitle(`O valor ${value} já existe na árvore.`);
+            this.lastOperationSuccess = false; // Define o status como falha
             desenharArvore(this.root);
+            path.pop();
             return node;
         }
+
+        setSubtitle(`Comparando ${value} com ${node.value}...`);
         await destacarNo(node, x, y, controller);
         if (controller.skip) return node;
+
         const canvas = document.getElementById('tree-canvas');
         const deslocamento = canvas.width / Math.pow(2, nivel + 2);
         if (value < node.value) {
-            node.left = await this.insertAnimadoRecursivo(node.left, value, x - deslocamento, y + 80, nivel + 1, controller);
+            setSubtitle(`${value} < ${node.value}. Descendo para a sub-árvore esquerda.`);
+            await this.pausableDelay(800, controller);
+            node.left = await this.insertAnimadoRecursivo(node.left, value, x - deslocamento, y + 80, nivel + 1, controller, path);
         } else if (value > node.value) {
-            node.right = await this.insertAnimadoRecursivo(node.right, value, x + deslocamento, y + 80, nivel + 1, controller);
+            setSubtitle(`${value} > ${node.value}. Descendo para a sub-árvore direita.`);
+            await this.pausableDelay(800, controller);
+            node.right = await this.insertAnimadoRecursivo(node.right, value, x + deslocamento, y + 80, nivel + 1, controller, path);
         }
+        
+        path.pop();
         if (controller.skip) return node;
-        node.height = 1 + Math.max(this.height(node.left), this.height(node.right));
+
+        if (!this.lastOperationSuccess) {
+            return node;
+        }
+
+        setSubtitle(`Retornando para o nó ${node.value}. Verificando balanço...`);
+        await this.pausableDelay(800, controller);
+
+        const newHeight = 1 + Math.max(this.height(node.left), this.height(node.right));
+        if (node.height !== newHeight) {
+            const oldHeight = node.height; 
+            node.height = newHeight;       
+            await this.highlightBackpathAndUpdateHeight(node, x, y, oldHeight, controller);
+        }
+
         const balance = this.balanceFactor(node);
+        setSubtitle(`Fator de Balanço do nó ${node.value}: ${balance}`);
+        await this.pausableDelay(1000, controller);
+
         if (Math.abs(balance) > 1) {
             let rotationType = '';
             if (balance > 1 && value < node.left.value) rotationType = 'LL';
@@ -236,40 +283,49 @@ class AVLTree {
     }
 
     async animateRotation(unbalancedNode, x, y, nivel, rotationType, controller) {
-        exibirMensagem("sucesso", `Desbalanceamento detectado! Rotacionando...`);
+        let subtitleText = '';
+        switch (rotationType) {
+            case 'LL': subtitleText = `Desbalanceamento detectado! Rotação Simples à Direita (LL) no nó ${unbalancedNode.value}.`; break;
+            case 'RR': subtitleText = `Desbalanceamento detectado! Rotação Simples à Esquerda (RR) no nó ${unbalancedNode.value}.`; break;
+            case 'LR': subtitleText = `Desbalanceamento detectado! Rotação Dupla Esquerda-Direita (LR) no nó ${unbalancedNode.value}.`; break;
+            case 'RL': subtitleText = `Desbalanceamento detectado! Rotação Dupla Direita-Esquerda (RL) no nó ${unbalancedNode.value}.`; break;
+        }
+        setSubtitle(subtitleText);
+        await this.pausableDelay(1200, controller);
+
         const initialPositions = new Map();
         this.getNodePositions(unbalancedNode, x, y, nivel, initialPositions);
         const clonedNode = this.cloneNode(unbalancedNode);
         const finalSubtreeRoot = this.performLogicalRotation(clonedNode, rotationType);
         const finalPositions = new Map();
         this.getNodePositions(finalSubtreeRoot, x, y, nivel, finalPositions);
-        const duration = 800;
-        let startTime = null;
-        let timeSpentPaused = 0;
-        let lastPauseTime = null;
+        
+        const baseDuration = 1200;
+        let progress = 0;
+        let lastFrameTime = null;
+        
         return new Promise(resolve => {
             const step = (currentTime) => {
                 if (controller.skip) { resolve(); return; }
-                if (animacaoPausada) {
-                    if (lastPauseTime === null) lastPauseTime = currentTime;
-                    requestAnimationFrame(step);
-                    return;
+                if (lastFrameTime === null) lastFrameTime = currentTime;
+                
+                const deltaTime = currentTime - lastFrameTime;
+                lastFrameTime = currentTime;
+
+                if (!animacaoPausada) {
+                    progress += (deltaTime / baseDuration) * animationSpeedMultiplier;
                 }
-                if (lastPauseTime !== null) {
-                    timeSpentPaused += (currentTime - lastPauseTime);
-                    lastPauseTime = null;
-                }
-                if (startTime === null) startTime = currentTime;
-                const elapsedTime = currentTime - startTime - timeSpentPaused;
-                const progress = Math.min(elapsedTime / duration, 1);
+                if (progress >= 1) progress = 1;
+
                 const ease = t => t * (2 - t);
                 const easedProgress = ease(progress);
                 const canvas = document.getElementById('tree-canvas');
                 const ctx = canvas.getContext('2d');
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
                 const drawStaticPart = (node, currentX, currentY, currentNivel) => {
                     if (!node || initialPositions.has(node.value)) return;
-                    this.drawNode(ctx, currentX, currentY, node.value, 'lightblue');
+                    this.drawNode(ctx, currentX, currentY, node.value, 'lightblue', node.height);
                     const d = canvas.width / Math.pow(2, currentNivel + 2);
                     if (node.left && !initialPositions.has(node.left.value)) {
                         ctx.beginPath(); ctx.moveTo(currentX, currentY); ctx.lineTo(currentX - d, currentY + 80); ctx.stroke();
@@ -281,25 +337,45 @@ class AVLTree {
                     drawStaticPart(node.right, currentX + d, currentY + 80, currentNivel + 1);
                 };
                 drawStaticPart(this.root, canvas.width / 2, 60, 0);
+                
                 for (const [value, initialPos] of initialPositions.entries()) {
                     const finalPos = finalPositions.get(value);
                     if (!finalPos) continue;
                     finalPos.currentX = initialPos.x + (finalPos.x - initialPos.x) * easedProgress;
                     finalPos.currentY = initialPos.y + (finalPos.y - initialPos.y) * easedProgress;
                 }
+                
                 for (const [value, finalPosData] of finalPositions.entries()) {
-                    this.drawNode(ctx, finalPosData.currentX, finalPosData.currentY, value, 'orange');
                     const parentNode = this.findParent(finalSubtreeRoot, value);
                     if (parentNode) {
                         const parentPosData = finalPositions.get(parentNode.value);
                         if (parentPosData) {
+                            const parentX = parentPosData.currentX;
+                            const parentY = parentPosData.currentY;
+                            const childX = finalPosData.currentX;
+                            const childY = finalPosData.currentY;
+                            const angle = Math.atan2(childY - parentY, childX - parentX);
+                            const raio = 25;
+                            const startX = parentX + raio * Math.cos(angle);
+                            const startY = parentY + raio * Math.sin(angle);
+                            const endX = childX - raio * Math.cos(angle);
+                            const endY = childY - raio * Math.sin(angle);
+                            ctx.strokeStyle = "tomato";
+                            ctx.lineWidth = 2;
                             ctx.beginPath();
-                            ctx.moveTo(finalPosData.currentX, finalPosData.currentY);
-                            ctx.lineTo(parentPosData.currentX, parentPosData.currentY);
+                            ctx.moveTo(startX, startY);
+                            ctx.lineTo(endX, endY);
                             ctx.stroke();
+                            ctx.strokeStyle = "#1f2937";
+                            ctx.lineWidth = 1;
                         }
                     }
                 }
+
+                for (const [value, finalPosData] of finalPositions.entries()) {
+                    this.drawNode(ctx, finalPosData.currentX, finalPosData.currentY, value, 'orange', finalPosData.node.height);
+                }
+
                 if (progress < 1) {
                     requestAnimationFrame(step);
                 } else {
@@ -310,7 +386,7 @@ class AVLTree {
         });
     }
 
-    drawNode(ctx, x, y, value, color) {
+    drawNode(ctx, x, y, value, color, height, oldHeight, oldOpacity, newOpacity) {
         const raio = 25;
         ctx.beginPath();
         ctx.arc(x, y, raio, 0, 2 * Math.PI);
@@ -319,6 +395,27 @@ class AVLTree {
         ctx.stroke();
         ctx.fillStyle = "black";
         ctx.fillText(value, x, y + 6);
+    
+        if (height !== undefined) {
+            const originalAlign = ctx.textAlign;
+            const originalFont = ctx.font;
+            ctx.font = "16px Arial";
+            ctx.fillStyle = "#150655";
+            ctx.textAlign = "center"; // MUDANÇA: Centralizado
+
+            if (oldHeight !== undefined) {
+                ctx.globalAlpha = oldOpacity;
+                ctx.fillText(oldHeight, x, y - raio - 8); // MUDANÇA: Posição Y ajustada
+                ctx.globalAlpha = newOpacity;
+                ctx.fillText(height, x, y - raio - 8); // MUDANÇA: Posição Y ajustada
+                ctx.globalAlpha = 1.0;
+            } else {
+                ctx.fillText(height, x, y - raio - 8); // MUDANÇA: Posição Y ajustada
+            }
+    
+            ctx.textAlign = originalAlign;
+            ctx.font = originalFont;
+        }
     }
 
     findParent(root, value) {
@@ -347,11 +444,9 @@ class AVLTree {
         return newNode;
     }
 
-    // --- NOVAS FUNÇÕES PARA ANIMAÇÃO DO HISTÓRICO ---
-
     getStructuredNodePositions(structuredNode, startX, startY, nivel, positionsMap) {
         if (!structuredNode) return;
-        positionsMap.set(structuredNode.value, { x: startX, y: startY });
+        positionsMap.set(structuredNode.value, { x: startX, y: startY, node: structuredNode });
         const canvas = document.getElementById('tree-canvas');
         const deslocamento = canvas.width / Math.pow(2, nivel + 2);
         this.getStructuredNodePositions(structuredNode.left, startX - deslocamento, startY + 80, nivel + 1, positionsMap);
@@ -370,33 +465,31 @@ class AVLTree {
         return parent;
     }
 
-    async animateStateTransition(initialTree, finalTree, controller) {
+    async animateStateTransition(initialTree, finalTree, controller, rotationPivotValue = null) {
         const canvas = document.getElementById('tree-canvas');
         const initialPositions = new Map();
         this.getStructuredNodePositions(initialTree, canvas.width / 2, 60, 0, initialPositions);
         const finalPositions = new Map();
         this.getStructuredNodePositions(finalTree, canvas.width / 2, 60, 0, finalPositions);
         const allValues = new Set([...initialPositions.keys(), ...finalPositions.keys()]);
-        const duration = 600;
-        let startTime = null;
-        let timeSpentPaused = 0;
-        let lastPauseTime = null;
+        
+        const baseDuration = 800;
+        let progress = 0;
+        let lastFrameTime = null;
 
         return new Promise(resolve => {
             const step = (currentTime) => {
                 if (controller.skip) { resolve(); return; }
-                if (animacaoPausada) {
-                    if (lastPauseTime === null) lastPauseTime = currentTime;
-                    requestAnimationFrame(step);
-                    return;
+                if (lastFrameTime === null) lastFrameTime = currentTime;
+
+                const deltaTime = currentTime - lastFrameTime;
+                lastFrameTime = currentTime;
+
+                if (!animacaoPausada) {
+                    progress += (deltaTime / baseDuration) * animationSpeedMultiplier;
                 }
-                if (lastPauseTime !== null) {
-                    timeSpentPaused += (currentTime - lastPauseTime);
-                    lastPauseTime = null;
-                }
-                if (startTime === null) startTime = currentTime;
-                const elapsedTime = currentTime - startTime - timeSpentPaused;
-                const progress = Math.min(elapsedTime / duration, 1);
+                if (progress >= 1) progress = 1;
+
                 const ease = t => t * (2 - t);
                 const easedProgress = ease(progress);
                 const ctx = canvas.getContext('2d');
@@ -415,10 +508,23 @@ class AVLTree {
                             const parentY = initialParentPos.y + (parentFinalPos.y - initialParentPos.y) * easedProgress;
                             const childX = initialChildPos.x + (finalPos.x - initialChildPos.x) * easedProgress;
                             const childY = initialChildPos.y + (finalPos.y - initialChildPos.y) * easedProgress;
+                            const angle = Math.atan2(childY - parentY, childX - parentX);
+                            const raio = 25;
+                            const startX = parentX + raio * Math.cos(angle);
+                            const startY = parentY + raio * Math.sin(angle);
+                            const endX = childX - raio * Math.cos(angle);
+                            const endY = childY - raio * Math.sin(angle);
+                            
+                            if (rotationPivotValue) {
+                                ctx.strokeStyle = "tomato";
+                                ctx.lineWidth = 2;
+                            }
                             ctx.beginPath();
-                            ctx.moveTo(parentX, parentY);
-                            ctx.lineTo(childX, childY);
+                            ctx.moveTo(startX, startY);
+                            ctx.lineTo(endX, endY);
                             ctx.stroke();
+                            ctx.strokeStyle = "#1f2937";
+                            ctx.lineWidth = 1;
                         }
                     }
                 }
@@ -431,7 +537,7 @@ class AVLTree {
                     if (initialPos && finalPos) {
                         currentX = initialPos.x + (finalPos.x - initialPos.x) * easedProgress;
                         currentY = initialPos.y + (finalPos.y - initialPos.y) * easedProgress;
-                        color = 'lightblue';
+                        color = (value === rotationPivotValue) ? 'orange' : 'lightblue';
                     } else if (!initialPos && finalPos) {
                         currentX = finalPos.x;
                         currentY = finalPos.y;
@@ -446,13 +552,155 @@ class AVLTree {
                         continue;
                     }
                     ctx.globalAlpha = opacity;
-                    this.drawNode(ctx, currentX, currentY, value, color);
+                    const nodeData = finalPos ? finalPos.node : initialPos.node;
+                    this.drawNode(ctx, currentX, currentY, value, color, nodeData.height);
                     ctx.globalAlpha = 1;
                 }
 
                 if (progress < 1) {
                     requestAnimationFrame(step);
                 } else {
+                    resolve();
+                }
+            };
+            requestAnimationFrame(step);
+        });
+    }
+    
+    findNode(node, value) {
+        if (!node) return null;
+        if (value < node.value) return this.findNode(node.left, value);
+        if (value > node.value) return this.findNode(node.right, value);
+        return node;
+    }
+
+    findRotationPivot(initialRoot, finalRoot) {
+        if (!initialRoot || !finalRoot) return null;
+        const initialParents = new Map();
+        const finalParents = new Map();
+        function mapParents(node, parent, map) {
+            if (!node) return;
+            map.set(node.value, parent ? parent.value : null);
+            mapParents(node.left, node, map);
+            mapParents(node.right, node, map);
+        }
+        mapParents(initialRoot, null, initialParents);
+        mapParents(finalRoot, null, finalParents);
+        for (const [value, initialParentValue] of initialParents.entries()) {
+            if (!initialParentValue) continue;
+            const finalParentValue = finalParents.get(value);
+            if (finalParentValue !== initialParentValue) {
+                const finalParentOfInitialParent = finalParents.get(initialParentValue);
+                if (finalParentOfInitialParent === value) {
+                    return initialParentValue;
+                }
+            }
+        }
+        return null;
+    }
+
+    async removeValueAnimado(value, controller) {
+        this.lastOperationSuccess = true; // Reseta o status
+        if (!this.findNode(this.root, value)) {
+            setSubtitle(`Valor ${value} não encontrado para remoção.`);
+            this.lastOperationSuccess = false;
+            return;
+        }
+
+        const canvas = document.getElementById('tree-canvas');
+        const ctx = canvas.getContext('2d');
+        desenharNoPendente(ctx, value, this.PENDING_NODE_X, this.PENDING_NODE_Y, "Removendo...");
+        await this.pausableDelay(1000, controller);
+        if (controller.skip) return;
+        
+        const path = [];
+        await this.findPathToNode(this.root, value, canvas.width / 2, 60, 0, controller, path);
+        if (controller.skip) return;
+        
+        const initialTreeState = estruturar(this.root);
+        
+        const tempTree = new AVLTree();
+        tempTree.root = this.cloneNode(this.root);
+        tempTree.root = tempTree.removeNode(tempTree.root, value);
+        const finalTreeState = estruturar(tempTree.root);
+
+        const pivotValue = this.findRotationPivot(initialTreeState, finalTreeState);
+        if (pivotValue) {
+             setSubtitle(`Rebalanceamento necessário no nó ${pivotValue}!`);
+             await this.pausableDelay(1000, controller);
+             if (controller.skip) return;
+        }
+
+        await this.animateStateTransition(initialTreeState, finalTreeState, controller, pivotValue);
+        
+        if (!controller.skip) {
+            this.root = this.rebuildTreeFromState(finalTreeState);
+        }
+    }
+
+    async findPathToNode(node, value, x, y, nivel, controller, path) {
+        if (!node || (controller && controller.skip)) return null;
+        
+        path.push({node, x, y});
+        await destacarNo(node, x, y, controller);
+        if (controller.skip) return null;
+
+        if (value === node.value) {
+            return { x, y, node };
+        }
+
+        const deslocamento = document.getElementById('tree-canvas').width / Math.pow(2, nivel + 2);
+        let result;
+        if (value < node.value) {
+            result = await this.findPathToNode(node.left, value, x - deslocamento, y + 80, nivel + 1, controller, path);
+        } else {
+            result = await this.findPathToNode(node.right, value, x + deslocamento, y + 80, nivel + 1, controller, path);
+        }
+        
+        if (!result) { 
+            path.pop();
+        }
+        return result;
+    }
+
+   async highlightBackpathAndUpdateHeight(node, x, y, oldHeight, controller) {
+        if (controller.skip) return;
+        
+        setSubtitle(`Atualizando altura do nó ${node.value} de ${oldHeight} para ${node.height}.`);
+        
+        const baseDuration = 1500;
+        let progress = 0;
+        let lastFrameTime = null;
+
+        return new Promise(resolve => {
+            const step = (currentTime) => {
+                if (controller.skip) { resolve(); return; }
+                if (lastFrameTime === null) lastFrameTime = currentTime;
+                
+                const deltaTime = currentTime - lastFrameTime;
+                lastFrameTime = currentTime;
+
+                if (!animacaoPausada) {
+                    progress += (deltaTime / baseDuration) * animationSpeedMultiplier;
+                }
+                if (progress >= 1) progress = 1;
+
+                desenharArvore(this.root, {
+                    [node.value]: {
+                        color: `rgb(${Math.round(224 + (139 - 224) * Math.sin(progress * Math.PI))}, ${Math.round(242 + (92 - 242) * Math.sin(progress * Math.PI))}, ${Math.round(254 + (246 - 254) * Math.sin(progress * Math.PI))})`,
+                        heightInfo: {
+                            newHeight: node.height, // <-- Pega a altura nova do modelo
+                            oldHeight: oldHeight,   // <-- Pega a altura antiga do parâmetro
+                            oldOpacity: 1 - Math.min(progress / 0.5, 1),
+                            newOpacity: Math.max(0, (progress - 0.5) / 0.5)
+                        }
+                    }
+                });
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    desenharArvore(this.root); 
                     resolve();
                 }
             };

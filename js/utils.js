@@ -6,7 +6,19 @@ function exibirMensagem(tipo, texto) {
     setTimeout(() => div.style.display = "none", 3000);
 }
 
+/**
+ * NOVO: Define o texto da legenda da animação.
+ * @param {string} text - O texto a ser exibido. Se for vazio, limpa a legenda.
+ */
+function setSubtitle(text = '') {
+    const subtitleEl = document.getElementById('animation-subtitle');
+    if (subtitleEl) {
+        subtitleEl.textContent = text;
+    }
+}
+
 function salvarEstado() {
+    // Garante que não há estados futuros se voltamos no tempo e inserimos um novo
     if (indiceAtual < estadosArvore.length - 1) {
         estadosArvore = estadosArvore.slice(0, indiceAtual + 1);
     }
@@ -15,7 +27,8 @@ function salvarEstado() {
 }
 
 function estruturar(node) {
-    return node ? { value: node.value, left: estruturar(node.left), right: estruturar(node.right) } : null;
+    // Adiciona a altura (height) ao estado guardado
+    return node ? { value: node.value, height: node.height, left: estruturar(node.left), right: estruturar(node.right) } : null;
 }
 
 // Função de controlo de pausa/continuação

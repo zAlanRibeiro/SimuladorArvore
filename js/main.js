@@ -2,23 +2,48 @@ let estadosArvore = [];
 let indiceAtual = -1;
 let animacaoPausada = true;
 let animacaoEmExecucao = false;
-let animationController = null; // Controlador para a animação atual
+let animationController = null;
+let animationSpeedMultiplier = 1.0;
 
-$(document).ready(() => console.log("jQuery carregado com sucesso!"));
+// --- FUNÇÕES DE CONTROLE DA UI ---
+
+function disableAnimationControls() {
+    document.querySelectorAll('button, input').forEach(el => el.disabled = true);
+    document.getElementById('speed-slider').disabled = false;
+    document.getElementById('pause-btn').disabled = false;
+    document.getElementById('skip-forward-btn').disabled = false;
+}
+
+function enableAllControls() {
+    document.querySelectorAll('button, input').forEach(el => el.disabled = false);
+}
+
+
+// --- LÓGICA PRINCIPAL ---
+
+$(document).ready(() => {
+    console.log("jQuery carregado com sucesso!");
+    const speedSlider = document.getElementById('speed-slider');
+    const speedValue = document.getElementById('speed-value');
+
+    speedSlider.addEventListener('input', (e) => {
+        animationSpeedMultiplier = parseFloat(e.target.value);
+        speedValue.textContent = `${animationSpeedMultiplier.toFixed(2)}x`;
+    });
+});
 
 async function inserirValor() {
     if (animacaoEmExecucao) {
-        exibirMensagem("erro", "Aguarde a animação atual terminar.");
+        setSubtitle("Aguarde a animação atual terminar.");
         return;
     }
     const input = document.getElementById('valorInserir');
     const valor = input.value.trim();
     if (!valor || isNaN(valor)) {
-        exibirMensagem("erro", "Preencha o campo corretamente!");
+        setSubtitle("Por favor, insira um valor numérico válido.");
         return;
     }
 
-    // Se voltamos no tempo, o novo estado irá sobrepor o futuro
     if (indiceAtual < estadosArvore.length - 1) {
         estadosArvore = estadosArvore.slice(0, indiceAtual + 1);
     }
@@ -26,9 +51,8 @@ async function inserirValor() {
     animacaoEmExecucao = true;
     animacaoPausada = false;
     animationController = { skip: false };
-    document.querySelectorAll('button, input').forEach(el => el.disabled = true);
-    document.getElementById('pause-btn').disabled = false;
-    document.getElementById('skip-forward-btn').disabled = false;
+    setSubtitle('');
+    disableAnimationControls();
 
     await avlTree.insertValueAnimado(Number(valor), animationController);
 
@@ -39,28 +63,55 @@ async function inserirValor() {
     desenharArvore(avlTree.root);
     salvarEstado();
 
-    document.querySelectorAll('button, input').forEach(el => el.disabled = false);
+    if (!animationController.skip && avlTree.lastOperationSuccess) {
+        setSubtitle('Operação concluída.');
+    }
+    enableAllControls();
     input.value = "";
     animacaoEmExecucao = false;
     animacaoPausada = true;
     animationController = null;
 }
 
-function removerValor() {
+async function removerValor() {
+    if (animacaoEmExecucao) {
+        setSubtitle("Aguarde a animação atual terminar.");
+        return;
+    }
     const input = document.getElementById('valorRemove');
     const valor = input.value.trim();
     if (!valor || isNaN(valor)) {
-        exibirMensagem("erro", "Preencha o campo corretamente!");
+        setSubtitle("Por favor, insira um valor numérico válido.");
         return;
     }
-    avlTree.root = avlTree.removeNode(avlTree.root, Number(valor));
-    atualizarVisualizacao();
-    input.value = "";
-}
+    
+    if (indiceAtual < estadosArvore.length - 1) {
+        estadosArvore = estadosArvore.slice(0, indiceAtual + 1);
+    }
 
-function atualizarVisualizacao() {
+    animacaoEmExecucao = true;
+    animacaoPausada = false;
+    animationController = { skip: false };
+    setSubtitle('');
+    disableAnimationControls();
+
+    await avlTree.removeValueAnimado(Number(valor), animationController);
+    
+    if (animationController.skip) {
+        avlTree.root = avlTree.removeNode(avlTree.root, Number(valor));
+    }
+
     desenharArvore(avlTree.root);
     salvarEstado();
+
+    if (!animationController.skip && avlTree.lastOperationSuccess) {
+        setSubtitle('Operação concluída.');
+    }
+    enableAllControls();
+    input.value = "";
+    animacaoEmExecucao = false;
+    animacaoPausada = true;
+    animationController = null;
 }
 
 function limparArvore() {
@@ -71,27 +122,25 @@ function limparArvore() {
     animacaoPausada = true;
     desenharArvore(avlTree.root);
     salvarEstado();
-    exibirMensagem("sucesso", "Árvore resetada com sucesso!");
-    document.getElementById("caminhoBox").style.display = "none";
-    document.getElementById("caminhoTexto").textContent = "---";
+    setSubtitle('Árvore limpa.');
 }
 
 async function consultarCaminho() {
     if (animacaoEmExecucao) return;
     const tipo = [...document.getElementsByName("caminho")].find(r => r.checked)?.value;
-    if (!tipo) return exibirMensagem("erro", "Selecione um tipo de percurso.");
+    if (!tipo) {
+        setSubtitle("Por favor, selecione um tipo de percurso.");
+        return;
+    }
     
     const percursosTexto = { A: preOrder, B: inOrder, C: posOrder };
     const resultado = percursosTexto[tipo](avlTree.root).join(" → ");
-    document.getElementById("caminhoTexto").textContent = resultado;
-    document.getElementById("caminhoBox").style.display = "block";
 
     animacaoEmExecucao = true;
     animacaoPausada = false;
     animationController = { skip: false };
-    document.querySelectorAll('button, input').forEach(el => el.disabled = true);
-    document.getElementById('pause-btn').disabled = false;
-    document.getElementById('skip-forward-btn').disabled = false;
+    setSubtitle('Iniciando percurso...');
+    disableAnimationControls();
     
     const root = avlTree.root;
     if (root) {
@@ -101,10 +150,11 @@ async function consultarCaminho() {
     }
 
     desenharArvore(avlTree.root);
+    setSubtitle(`Percurso concluído: ${resultado}`); // <-- ALTERAÇÃO AQUI
     animacaoEmExecucao = false;
     animacaoPausada = true;
     animationController = null;
-    document.querySelectorAll('button, input').forEach(el => el.disabled = false);
+    enableAllControls();
 }
 
 function skipBack() {
@@ -122,9 +172,7 @@ async function stepBack() {
         animacaoEmExecucao = true;
         animacaoPausada = false;
         animationController = { skip: false };
-        document.querySelectorAll('button, input').forEach(el => el.disabled = true);
-        document.getElementById('pause-btn').disabled = false;
-        document.getElementById('skip-forward-btn').disabled = false;
+        disableAnimationControls();
 
         const initialState = estadosArvore[indiceAtual];
         const finalState = estadosArvore[indiceAtual - 1];
@@ -141,7 +189,7 @@ async function stepBack() {
         animacaoEmExecucao = false;
         animacaoPausada = true;
         animationController = null;
-        document.querySelectorAll('button, input').forEach(el => el.disabled = false);
+        enableAllControls();
     }
 }
 
@@ -151,9 +199,7 @@ async function stepForward() {
         animacaoEmExecucao = true;
         animacaoPausada = false;
         animationController = { skip: false };
-        document.querySelectorAll('button, input').forEach(el => el.disabled = true);
-        document.getElementById('pause-btn').disabled = false;
-        document.getElementById('skip-forward-btn').disabled = false;
+        disableAnimationControls();
 
         const initialState = estadosArvore[indiceAtual];
         const finalState = estadosArvore[indiceAtual + 1];
@@ -170,7 +216,7 @@ async function stepForward() {
         animacaoEmExecucao = false;
         animacaoPausada = true;
         animationController = null;
-        document.querySelectorAll('button, input').forEach(el => el.disabled = false);
+        enableAllControls();
     }
 }
 
@@ -192,16 +238,15 @@ async function executarBusca() {
     const input = document.getElementById("valorBusca");
     const value = input.value.trim();
     if (value === "" || isNaN(value)) {
-        exibirMensagem("erro", "Digite um número válido para buscar.");
+        setSubtitle("Por favor, insira um valor numérico válido para buscar.");
         return;
     }
 
     animacaoEmExecucao = true;
     animacaoPausada = false;
     animationController = { skip: false };
-    document.querySelectorAll('button, input').forEach(el => el.disabled = true);
-    document.getElementById('pause-btn').disabled = false;
-    document.getElementById('skip-forward-btn').disabled = false;
+    setSubtitle('');
+    disableAnimationControls();
 
     const canvas = document.getElementById('tree-canvas');
     await avlTree.buscaBinaria(avlTree.root, Number(value), canvas.width / 2, 60, 0, animationController);
@@ -210,6 +255,6 @@ async function executarBusca() {
     animacaoEmExecucao = false;
     animacaoPausada = true;
     animationController = null;
-    document.querySelectorAll('button, input').forEach(el => el.disabled = false);
+    enableAllControls();
     input.value = "";
 }

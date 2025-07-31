@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Árvore AVL</title>
     
+    <!-- Fontes e Estilos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 
+    <!-- Scripts do Simulador -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/arvoreAvl.js"></script>
     <script src="js/canvas.js"></script>
@@ -19,29 +21,51 @@
 </head>
 <body>
 
+    <!-- Barra Lateral (Sidebar) -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-logo"><path d="M12 11v8M12 3v4M18.364 5.636a9 9 0 1 1-12.728 0 9 9 0 0 1 12.728 0z"></path></svg>
+            <svg viewBox="0 0 24 24" class="sidebar-logo">
+                <path d="M12 11v8M12 3v4M18.364 5.636a9 9 0 1 1-12.728 0 9 9 0 0 1 12.728 0z"></path>
+            </svg>
             <h1>DataStructs</h1>
         </div>
         <nav>
             <ul>
                 <li><a href="dashboard.html" class="sidebar-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+                    <svg viewBox="0 0 24 24">
+                        <rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect>
+                    </svg>
                     <span>Dashboard</span>
                 </a></li>
-                <li><a href="index.html" class="sidebar-link active">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10v12"></path><path d="M12 3.5A2.5 2.5 0 0 1 14.5 6V8a2.5 2.5 0 0 1-5 0V6A2.5 2.5 0 0 1 12 3.5z"></path><path d="m4 14 1.1-1.1c.9-.9 2.1-1.4 3.4-1.4h7c1.3 0 2.5.5 3.4 1.4L20 14"></path></svg>
+                <li><a href="arvoreAvl.html" class="sidebar-link active">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 10v12"></path><path d="M12 3.5A2.5 2.5 0 0 1 14.5 6V8a2.5 2.5 0 0 1-5 0V6A2.5 2.5 0 0 1 12 3.5z"></path><path d="m4 14 1.1-1.1c.9-.9 2.1-1.4 3.4-1.4h7c1.3 0 2.5.5 3.4 1.4L20 14"></path>
+                    </svg>
                     <span>Árvore AVL</span>
                 </a></li>
                 <li><a href="#" class="sidebar-link disabled">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h2"/><path d="M6 12h2"/><path d="M10 12h2"/><path d="M14 12h2"/><path d="M18 12h2"/><path d="M20 12h2"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2 12h2"></path><path d="M6 12h2"></path><path d="M10 12h2"></path><path d="M14 12h2"></path><path d="M18 12h2"></path><path d="M20 12h2"></path>
+                    </svg>
                     <span>Lista Ligada</span>
+                </a></li>
+                <li><a href="#" class="sidebar-link disabled">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2 5v2.5l2.5 2.5L2 12.5V15"></path><path d="M7 5v10"></path><path d="M12 5v10"></path><path d="M22 5v2.5l-2.5 2.5L22 12.5V15"></path>
+                    </svg>
+                    <span>Fila</span>
+                </a></li>
+                <li><a href="#" class="sidebar-link disabled">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2 12h.01"></path><path d="M6 12h.01"></path><path d="M10 12h.01"></path><path d="M14 12h.01"></path><path d="M18 12h.01"></path><path d="M22 12h.01"></path>
+                    </svg>
+                    <span>Pilha</span>
                 </a></li>
             </ul>
         </nav>
     </aside>
 
+    <!-- Conteúdo Principal do Simulador -->
     <main class="main-content">
         <header class="main-header">
             <h2>Simulador de Árvore AVL</h2>
@@ -51,6 +75,7 @@
         <div id="mensagem" class="mensagem"></div>
 
         <div class="controls-container">
+            <!-- Controles de Manipulação -->
             <div class="control-group">
                 <input type="text" id="valorInserir" class="input-field" placeholder="Valor para inserir...">
                 <button class="btn btn-success" onclick="inserirValor()">Inserir</button>
@@ -65,6 +90,7 @@
             </div>
         </div>
 
+        <!-- Controles de Percurso e Navegação Agrupados -->
         <div class="percurso-section">
             <fieldset>
                 <legend>Tipo de Percurso</legend>
@@ -75,22 +101,30 @@
                 </div>
                 <button class="btn btn-primary" onclick="consultarCaminho()">Consultar Percurso</button>
             </fieldset>
-            <div class="caminho-resultado" id="caminhoBox" style="display: none;">
-                <strong>Caminho:</strong> <span id="caminhoTexto">---</span>
+
+            <!-- Controles de Navegação e Velocidade -->
+            <div class="navigation-controls">
+                <div class="speed-control-group">
+                    <label for="speed-slider">Velocidade:</label>
+                    <input type="range" id="speed-slider" min="0.25" max="5.0" value="1" step="0.25">
+                    <span id="speed-value">1.0x</span>
+                </div>
+                <button class="btn" onclick="skipBack()">⏮ Início</button>
+                <button class="btn" onclick="stepBack()">◀ Anterior</button>
+                <button id="pause-btn" class="btn" onclick="alternarAnimacao()">⏸ Pausar</button>
+                <button class="btn" onclick="stepForward()">Próximo ▶</button>
+                <button id="skip-forward-btn" class="btn" onclick="skipForward()">Fim ⏭</button>
             </div>
         </div>
 
+        <!-- Canvas da Árvore -->
         <div class="canvas-container">
             <canvas id="tree-canvas" width="1200" height="600"></canvas>
         </div>
 
-        <div class="navigation-controls">
-            <button class="btn" onclick="skipBack()">⏮ Início</button>
-            <button class="btn" onclick="stepBack()">◀ Anterior</button>
-            <button id="pause-btn" class="btn" onclick="alternarAnimacao()">⏸ Pausar</button>
-            <button class="btn" onclick="stepForward()">Próximo ▶</button>
-            <button id="skip-forward-btn" class="btn" onclick="skipForward()">Fim ⏭</button>
-        </div>
+        <!-- Container da Legenda da Animação -->
+        <div id="animation-subtitle" class="animation-subtitle"></div>
+        
     </main>
 
 </body>
