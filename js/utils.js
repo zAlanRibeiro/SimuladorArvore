@@ -7,7 +7,7 @@ function exibirMensagem(tipo, texto) {
 }
 
 /**
- * NOVO: Define o texto da legenda da animação.
+ * Define o texto da legenda da animação.
  * @param {string} text - O texto a ser exibido. Se for vazio, limpa a legenda.
  */
 function setSubtitle(text = '') {
@@ -27,7 +27,7 @@ function salvarEstado() {
 }
 
 function estruturar(node) {
-    // Adiciona a altura (height) ao estado guardado
+    // Adiciona a altura ao estado guardado
     return node ? { value: node.value, height: node.height, left: estruturar(node.left), right: estruturar(node.right) } : null;
 }
 

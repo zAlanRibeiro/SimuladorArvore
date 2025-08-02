@@ -1,5 +1,6 @@
 function updateCanvasSize(root) {
     const canvas = document.getElementById('tree-canvas');
+    if (!canvas) return; // Adiciona uma verificação de segurança
     const profundidade = alturaArvore(root);
     const totalNos = contarNos(root);
 
@@ -7,9 +8,12 @@ function updateCanvasSize(root) {
     canvas.height = Math.max(600, profundidade * 150);
 }
 
-function desenharArvore(root, animationOverrides = {}) {
+function desenharArvore(tree, animationOverrides = {}) {
     const canvas = document.getElementById('tree-canvas');
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    const root = tree.root; // Extrai o nó raiz da instância da árvore
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = "20px Arial";
     ctx.textAlign = "center";
@@ -74,16 +78,16 @@ function desenharArvore(root, animationOverrides = {}) {
             const originalFont = ctx.font;
             ctx.font = "16px Arial";
             ctx.fillStyle = "#150655";
-            ctx.textAlign = "center"; // MUDANÇA: Centralizado
+            ctx.textAlign = "center";
 
             if (override && override.heightInfo) {
                 const { newHeight, oldHeight, oldOpacity, newOpacity } = override.heightInfo;
                 ctx.globalAlpha = oldOpacity;
-                ctx.fillText(oldHeight, x, y - raio - 8); // MUDANÇA: Posição Y ajustada
+                ctx.fillText(oldHeight, x, y - raio - 8);
                 ctx.globalAlpha = newOpacity;
-                ctx.fillText(newHeight, x, y - raio - 8); // MUDANÇA: Posição Y ajustada
+                ctx.fillText(newHeight, x, y - raio - 8);
             } else {
-                ctx.fillText(node.height, x, y - raio - 8); // MUDANÇA: Posição Y ajustada
+                ctx.fillText(node.height, x, y - raio - 8);
             }
 
             ctx.textAlign = originalAlign;
@@ -98,6 +102,11 @@ function desenharArvore(root, animationOverrides = {}) {
 
     desenharLinhas(root, canvas.width / 2, 60, 0);
     desenharNos(root, canvas.width / 2, 60, 0);
+
+    if (tree.pendingNodeInfo) {
+        const { value, x, y, text } = tree.pendingNodeInfo;
+        desenharNoPendente(ctx, value, x, y, text);
+    }
 }
 
 function alturaArvore(node) {
@@ -111,7 +120,6 @@ function contarNos(node) {
 function desenharNoPendente(ctx, valor, x, y, text = "Inserindo...") {
     const raio = 25;
     const color = text.includes("Removendo") ? "tomato" : "gold";
-    ctx.clearRect(x - raio - 10, y - raio - 10, raio * 2 + 20, raio * 2 + 60);
     ctx.beginPath();
     ctx.arc(x, y, raio, 0, 2 * Math.PI);
     ctx.fillStyle = color;

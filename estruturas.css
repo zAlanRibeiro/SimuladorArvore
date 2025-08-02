@@ -1,0 +1,171 @@
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.workspace {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.structure-container {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-sizing: border-box;
+    flex-basis: calc(50% - 0.75rem);
+    min-width: 450px;
+}
+
+.structure-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.structure-title-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.75rem;
+}
+
+.structure-title-group h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #1f2937;
+}
+
+.structure-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.structure-controls .value-input {
+    flex-grow: 1;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    color: #9ca3af;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.structure-body {
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    min-height: 120px;
+}
+
+.queue-body {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow-x: auto;
+}
+
+.stack-body {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.data-element {
+    background: linear-gradient(145deg, #e0f2fe, #a8d5f5);
+    border: 1px solid #3b82f6;
+    color: #1e3a8a;
+    font-weight: 600;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+/* --- ANIMAÇÕES ATUALIZADAS --- */
+
+/* Animação de Entrada */
+.data-element.entering {
+    animation: pop-in 0.3s ease;
+}
+@keyframes pop-in {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Animação de Saída para a FILA (para a esquerda) */
+.data-element.exiting-queue {
+    animation: slide-out-left 0.5s ease-in forwards;
+}
+@keyframes slide-out-left {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(-100px); opacity: 0; }
+}
+
+/* Animação de Saída para a PILHA (para cima) */
+.data-element.exiting-stack {
+    animation: slide-out-up 0.5s ease-in forwards;
+}
+@keyframes slide-out-up {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-100px); opacity: 0; }
+}
+
+
+.structure-info {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f3f4f6;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    border-top: 1px solid #e5e7eb;
+}
+
+.structure-info div {
+    flex: 1;
+}
+
+.structure-info h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+
+.structure-info p {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.structure-info p.full {
+    color: #ef4444;
+}

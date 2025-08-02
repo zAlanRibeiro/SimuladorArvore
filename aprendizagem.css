@@ -1,0 +1,232 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6; 
+    display: flex;
+    font-size: 0.8rem; /* Tamanho da fonte base reduzido */
+    color: #374151;
+    align-items: flex-start; /* Essencial para a sidebar sticky */
+}
+
+.sidebar {
+    background-color: #1a202c;
+    color: white;
+    width: 12.8rem; /* Reduzido */
+    height: 100vh; /* Garante a altura total para o sticky funcionar */
+    padding: 0.8rem; /* Reduzido */
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.6rem; /* Reduzido */
+}
+
+.sidebar-header h1 {
+    font-size: 1rem; /* Reduzido */
+    font-weight: 700; 
+}
+
+.sidebar-logo {
+    color: #48bb78; 
+    height: 1.6rem; /* Reduzido */
+    width: 1.6rem; /* Reduzido */
+    margin-right: 0.6rem; /* Reduzido */
+    flex-shrink: 0;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar nav li {
+    margin-bottom: 0.4rem; /* Reduzido */
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem; /* Reduzido */
+    border-radius: 0.5rem; 
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.2s;
+    font-weight: 500;
+}
+
+.sidebar-link:hover {
+    background-color: #2d3748;
+}
+
+.sidebar-link.active {
+    background-color: #2d3748;
+    border-left: 4px solid #48bb78;
+    padding-left: calc(0.6rem - 4px);
+}
+
+.sidebar-link.disabled {
+    color: #9ca3af; 
+    cursor: not-allowed;
+}
+
+.sidebar-link.disabled:hover {
+    background-color: transparent;
+}
+
+.sidebar-link svg {
+    height: 1rem; /* Reduzido */
+    width: 1rem; /* Reduzido */
+    margin-right: 0.6rem; /* Reduzido */
+    flex-shrink: 0;
+}
+
+.sidebar svg {
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke: currentColor;
+}
+
+.main-content {
+    flex: 1;
+    padding: 1.6rem;
+    display: flex;             
+    flex-direction: column; 
+}
+
+/* --- ESTILOS PARA ABAS DE NAVEGAÇÃO --- */
+.tabs-nav {
+    display: flex;
+    border-bottom: 1px solid #d1d5db;
+    margin-bottom: 1.5rem;
+    position: sticky;
+    top: 0;
+    background-color: #f3f4f6;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-link {
+    font-family: 'Inter', sans-serif;
+    padding: 0.6rem 1.2rem; /* Reduzido */
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size: 0.8rem; /* Reduzido */
+    font-weight: 600;
+    color: #6b7280;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: -1px; 
+}
+
+.tab-link:hover {
+    color: #1f2937;
+}
+
+.tab-link.active {
+    color: #1f2937;
+    border-bottom-color: #48bb78;
+}
+
+/* --- ESTILOS PARA CONTEÚDO DENTRO DAS ABAS --- */
+.content-wrapper {
+    background-color: white;
+    padding: 1.2rem; /* Reduzido */
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    flex: 1; 
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* --- ESTILOS DE TIPOGRAFIA (AJUSTADOS PARA TAMANHO COMPACTO) --- */
+.main-content h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.main-content h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-top: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.main-content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.main-content h4, .main-content h5, .main-content h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.main-content p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-size: 0.8rem; /* Alinhado com a fonte base */
+}
+
+.main-content a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.main-content a:hover {
+    text-decoration: underline;
+}
+
+.main-content pre {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.main-content code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+}
+
+.main-content p code, .main-content li code {
+    background-color: #e5e7eb;
+    color: #dc2626;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+}
+
+.main-content ul, .main-content ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.main-content li {
+    margin-bottom: 0.4rem;
+}

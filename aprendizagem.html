@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprendizagem: Estruturas de Dados</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="aprendizagem.css"> 
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-logo">
+                <path d="M12 11v8M12 3v4M18.364 5.636a9 9 0 1 1-12.728 0 9 9 0 0 1 12.728 0z"></path>
+            </svg>
+            <h1>DataStructs</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html" class="sidebar-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect>
+                    </svg>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="arvoreAvl.html" class="sidebar-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 10v12"></path><path d="M12 3.5A2.5 2.5 0 0 1 14.5 6V8a2.5 2.5 0 0 1-5 0V6A2.5 2.5 0 0 1 12 3.5z"></path><path d="m4 14 1.1-1.1c.9-.9 2.1-1.4 3.4-1.4h7c1.3 0 2.5.5 3.4 1.4L20 14"></path>
+                    </svg>
+                    <span>Árvore AVL</span>
+                </a></li>
+                <li><a href="estruturas.html" class="sidebar-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 12h20M2 6h20M2 18h20" />
+                    </svg>
+                    <span>Fila & Pilha</span>
+                </a></li>
+                <li><a href="#" class="sidebar-link disabled">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 12h2"></path><path d="M6 12h2"></path><path d="M10 12h2"></path><path d="M14 12h2"></path><path d="M18 12h2"></path><path d="M20 12h2"></path>
+                    </svg>
+                    <span>Lista Ligada</span>
+                </a></li>
+                 <li><a href="aprendizagem.html" class="sidebar-link active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                    </svg>
+                    <span>Aprendizagem</span>
+                </a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <h1>Aprendizagem</h1><br><br>
+        <div class="tabs-nav">
+            <button class="tab-link active" data-tab="pilha-fila">PILHA E FILA</button>
+            <button class="tab-link" data-tab="arvores">ÁRVORES BINÁRIAS</button>
+            <button class="tab-link" data-tab="listas">LISTAS</button>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="tab-content active" id="pilha-fila">
+                <h2>Descomplicando Pilhas e Filas: Um Guia Passo a Passo</h2>
+                <p>No mundo da programação, pilhas e filas são duas das estruturas de dados mais fundamentais. Elas servem para armazenar e organizar coleções de dados, mas cada uma segue uma regra diferente para adicionar e remover itens. Vamos entender como elas funcionam.</p>
+                
+                <h3>Pilha (Stack): O Último a Entrar é o Primeiro a Sair (LIFO)</h3>
+                <p>Pense em uma pilha de pratos. Você sempre coloca um novo prato no topo e, quando precisa de um, também o retira do topo. A pilha de dados funciona da mesma forma. O último elemento que você insere é o primeiro a ser removido. Essa lógica é conhecida como <code>LIFO (Last-In, First-Out)</code>.</p>
+                
+                <h4>Construindo uma Pilha em C</h4>
+                <p>Para criar uma pilha, precisamos de duas coisas: uma estrutura para guardar cada "prato" (o dado em si) e outra para gerenciar a pilha como um todo.</p>
+                
+                <h5>A Estrutura do Elemento (o "Prato")</h5>
+                <p>Cada elemento da nossa pilha precisa guardar um valor (um número, por exemplo) e uma "seta" que aponte para o elemento que está abaixo dele na pilha. Em C, criamos isso com uma <code>struct</code>.</p>
+                <pre><code>// Cada elemento (ou nó) da pilha
+struct Elemento {
+    int num; // O dado que vamos guardar
+    struct Elemento *prox; // Ponteiro para o próximo elemento abaixo
+};</code></pre>
+
+                <h5>A Estrutura da Pilha (a "Mesa" que segura os pratos)</h5>
+                <p>Agora, precisamos de uma estrutura que controle a pilha inteira. Ela só precisa de uma coisa: saber quem está no topo. Quando a pilha estiver vazia, o topo apontará para <code>NULL</code> (nulo).</p>
+                <pre><code>// A estrutura que gerencia a pilha
+struct Pilha {
+    struct Elemento *topo; // Ponteiro que sempre aponta para o topo da pilha
+};</code></pre>
+
+                <h4>Operações Principais da Pilha</h4>
+                <h5>Empilhar (push)</h5>
+                <p>Para adicionar um novo elemento, seguimos estes passos:</p>
+                <ul>
+                    <li>Criamos um novo <code>Elemento</code>.</li>
+                    <li>Fazemos o ponteiro <code>prox</code> desse novo elemento apontar para o antigo <code>topo</code>.</li>
+                    <li>Atualizamos o <code>topo</code> da pilha para ser este novo elemento.</li>
+                </ul>
+                <p>Veja como fica a função em C:</p>
+                <pre><code>// Função para inserir um elemento no topo da pilha (push)
+void insere_na_pilha(struct Pilha *pi, int numero) {
+    struct Elemento *novo = (struct Elemento*) malloc(sizeof(struct Elemento));
+    if (novo != NULL) {
+        novo->num = numero;
+        novo->prox = pi->topo;
+        pi->topo = novo;
+        printf("Número %d inserido na pilha!\n", numero);
+    }
+}</code></pre>
+
+                <h5>Desempilhar (pop)</h5>
+                <p>Para remover o elemento do topo, fazemos o seguinte:</p>
+                <ul>
+                    <li>Verificamos se a pilha não está vazia.</li>
+                    <li>Guardamos o endereço do topo atual em um ponteiro auxiliar.</li>
+                    <li>Fazemos o <code>topo</code> da pilha apontar para o elemento que estava abaixo dele.</li>
+                    <li>Liberamos a memória do elemento que foi removido (o antigo topo).</li>
+                </ul>
+                <p>A função em C fica assim:</p>
+                <pre><code>// Função para remover um elemento do topo da pilha (pop)
+void remove_da_pilha(struct Pilha *pi) {
+    if (pi->topo == NULL) {
+        printf("Pilha Vazia!!\n");
+    } else {
+        struct Elemento *aux = pi->topo;
+        printf("Número %d removido!\n", pi->topo->num);
+        pi->topo = pi->topo->prox;
+        free(aux);
+    }
+}</code></pre>
+
+                <h4>Exemplo Completo de Código para Pilha</h4>
+                <p>Agora, juntando tudo em um programa que você pode compilar e executar:</p>
+                <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct Elemento { /* ... */ };
+struct Pilha { /* ... */ };
+
+struct Pilha* cria_pilha() { /* ... */ }
+void insere_na_pilha(struct Pilha *pi, int numero) { /* ... */ }
+void remove_da_pilha(struct Pilha *pi) { /* ... */ }
+
+int main() {
+    struct Pilha *minha_pilha = cria_pilha();
+    insere_na_pilha(minha_pilha, 10);
+    insere_na_pilha(minha_pilha, 20);
+    insere_na_pilha(minha_pilha, 30); 
+    printf("\n--- Removendo da pilha ---\n");
+    remove_da_pilha(minha_pilha);
+    remove_da_pilha(minha_pilha);
+    remove_da_pilha(minha_pilha);
+    remove_da_pilha(minha_pilha);
+    free(minha_pilha);
+    return 0;
+}</code></pre>
+
+                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e5e7eb;">
+
+                <h3>Fila (Queue): O Primeiro a Entrar é o Primeiro a Sair (FIFO)</h3>
+                <p>Agora, imagine uma fila de pessoas em um banco. A primeira pessoa a chegar é a primeira a ser atendida. A fila de dados segue essa mesma lógica. O primeiro elemento inserido é o primeiro a ser removido. Esse princípio é chamado de <code>FIFO (First-In, First-Out)</code>.</p>
+                
+                <h4>Construindo uma Fila em C</h4>
+                <p>A estrutura do elemento é a mesma da pilha. O que muda é a estrutura de gerenciamento. Para uma fila, precisamos controlar tanto o <code>inicio</code> quanto o <code>fim</code>.</p>
+                
+                <h5>A Estrutura da Fila</h5>
+                <p>Precisamos de dois ponteiros: um para saber quem é o próximo a ser atendido (inicio) e outro para saber onde a próxima pessoa deve chegar (fim).</p>
+                <pre><code>// A estrutura que gerencia a fila
+struct Fila {
+    struct Elemento *inicio;
+    struct Elemento *fim;
+};</code></pre>
+            </div>
+            <div class="tab-content" id="arvores">
+                <h2>Árvores Binárias</h2>
+                <p>Conteúdo sobre árvores binárias aparecerá aqui.</p>
+            </div>
+            <div class="tab-content" id="listas">
+                <h2>Listas</h2>
+                <p>Conteúdo sobre listas aparecerá aqui.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="aprendizagem.js"></script>
+
+</body>
+</html>

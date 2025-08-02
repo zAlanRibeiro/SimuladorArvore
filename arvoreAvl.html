@@ -17,14 +17,14 @@
     <script src="js/canvas.js"></script>
     <script src="js/percursos.js"></script>
     <script src="js/utils.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/arvoreAvl-main.js"></script>
 </head>
 <body>
 
-    <!-- Barra Lateral (Sidebar) -->
+    <!-- Barra Lateral -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <svg viewBox="0 0 24 24" class="sidebar-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-logo">
                 <path d="M12 11v8M12 3v4M18.364 5.636a9 9 0 1 1-12.728 0 9 9 0 0 1 12.728 0z"></path>
             </svg>
             <h1>DataStructs</h1>
@@ -32,34 +32,35 @@
         <nav>
             <ul>
                 <li><a href="dashboard.html" class="sidebar-link">
-                    <svg viewBox="0 0 24 24">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect>
                     </svg>
                     <span>Dashboard</span>
                 </a></li>
                 <li><a href="arvoreAvl.html" class="sidebar-link active">
-                    <svg viewBox="0 0 24 24">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 10v12"></path><path d="M12 3.5A2.5 2.5 0 0 1 14.5 6V8a2.5 2.5 0 0 1-5 0V6A2.5 2.5 0 0 1 12 3.5z"></path><path d="m4 14 1.1-1.1c.9-.9 2.1-1.4 3.4-1.4h7c1.3 0 2.5.5 3.4 1.4L20 14"></path>
                     </svg>
                     <span>Árvore AVL</span>
                 </a></li>
+                <li><a href="estruturas.html" class="sidebar-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 12h20M2 6h20M2 18h20" />
+                    </svg>
+                    <span>Fila & Pilha</span>
+                </a></li>
                 <li><a href="#" class="sidebar-link disabled">
-                    <svg viewBox="0 0 24 24">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M2 12h2"></path><path d="M6 12h2"></path><path d="M10 12h2"></path><path d="M14 12h2"></path><path d="M18 12h2"></path><path d="M20 12h2"></path>
                     </svg>
                     <span>Lista Ligada</span>
                 </a></li>
-                <li><a href="#" class="sidebar-link disabled">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M2 5v2.5l2.5 2.5L2 12.5V15"></path><path d="M7 5v10"></path><path d="M12 5v10"></path><path d="M22 5v2.5l-2.5 2.5L22 12.5V15"></path>
+                 <li><a href="aprendizagem.html" class="sidebar-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
                     </svg>
-                    <span>Fila</span>
-                </a></li>
-                <li><a href="#" class="sidebar-link disabled">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M2 12h.01"></path><path d="M6 12h.01"></path><path d="M10 12h.01"></path><path d="M14 12h.01"></path><path d="M18 12h.01"></path><path d="M22 12h.01"></path>
-                    </svg>
-                    <span>Pilha</span>
+                    <span>Aprendizagem</span>
                 </a></li>
             </ul>
         </nav>
@@ -111,7 +112,7 @@
                 </div>
                 <button class="btn" onclick="skipBack()">⏮ Início</button>
                 <button class="btn" onclick="stepBack()">◀ Anterior</button>
-                <button id="pause-btn" class="btn" onclick="alternarAnimacao()">⏸ Pausar</button>
+                <button id="pause-btn" class="btn">⏸ Pausar</button>
                 <button class="btn" onclick="stepForward()">Próximo ▶</button>
                 <button id="skip-forward-btn" class="btn" onclick="skipForward()">Fim ⏭</button>
             </div>

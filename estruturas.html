@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Estruturas de Dados</title>
+    <title>Simulador de Estruturas</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="dashboard.css">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="estruturas.css">
 </head>
 <body>
 
@@ -20,7 +23,7 @@
         </div>
         <nav>
             <ul>
-                <li><a href="dashboard.html" class="sidebar-link active">
+                <li><a href="dashboard.html" class="sidebar-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect>
                     </svg>
@@ -32,7 +35,7 @@
                     </svg>
                     <span>Árvore AVL</span>
                 </a></li>
-                <li><a href="estruturas.html" class="sidebar-link">
+                <li><a href="estruturas.html" class="sidebar-link active">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M2 12h20M2 6h20M2 18h20" />
                     </svg>
@@ -57,55 +60,24 @@
 
     <main class="main-content">
         <header class="main-header">
-            <h2>Dashboard</h2>
-            <div class="search-container">
-                <input type="text" placeholder="Pesquisar..." class="search-input">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <h2>Laboratório de Filas e Pilhas</h2>
+            <!-- Botões de adicionar reintroduzidos -->
+            <div class="header-actions">
+                <button id="add-fila-btn" class="btn btn-primary">Adicionar Fila</button>
+                <button id="add-pilha-btn" class="btn btn-primary">Adicionar Pilha</button>
             </div>
         </header>
 
-        <div class="cards-grid">
-            <a href="arvoreAvl.html" class="card">
-                <div class="card-header">
-                    <div class="card-icon-wrapper">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10v12"></path><path d="M12 3.5A2.5 2.5 0 0 1 14.5 6V8a2.5 2.5 0 0 1-5 0V6A2.5 2.5 0 0 1 12 3.5z"></path><path d="m4 14 1.1-1.1c.9-.9 2.1-1.4 3.4-1.4h7c1.3 0 2.5.5 3.4 1.4L20 14"></path></svg>
-                    </div>
-                    <h3>Árvore AVL</h3>
-                </div>
-                <p>Um simulador interativo de árvores binárias de busca auto-balanceáveis. Visualize inserções, remoções e rotações em tempo real.</p>
-            </a>
-            <a href="estruturas.html" class="card">
-                <div class="card-header">
-                    <div class="card-icon-wrapper">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M2 6h20M2 18h20" /></svg>
-                    </div>
-                    <h3>Fila & Pilha</h3>
-                </div>
-                <p>Um laboratório interativo para explorar as diferenças entre as estruturas FIFO (Fila) e LIFO (Pilha).</p>
-            </a>
-            <div class="card disabled">
-                <div class="card-header">
-                    <div class="card-icon-wrapper">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h2"/><path d="M6 12h2"/><path d="M10 12h2"/><path d="M14 12h2"/><path d="M18 12h2"/><path d="M20 12h2"/></svg>
-                    </div>
-                    <h3>Lista Ligada</h3>
-                </div>
-                <p>Simulador para listas ligadas simples e duplas. (Em breve)</p>
-            </div>
-            <a href="aprendizagem.html" class="card">
-                <div class="card-header">
-                    <div class="card-icon-wrapper">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                        </svg>
-                    </div>
-                    <h3>Aprendizagem</h3>
-                </div>
-                <p>Descomplicando os conceitos de Estrutura de Dados Básica. (Em breve)</p>
-            </a>
+        <div id="mensagem" class="mensagem"></div>
+
+        <div id="workspace" class="workspace">
+            <!-- As estruturas de dados criadas aparecerão aqui -->
         </div>
     </main>
 
+    <!-- Scripts do Simulador -->
+    <script src="js/fila.js"></script>
+    <script src="js/pilha.js"></script>
+    <script src="js/estruturas-main.js"></script>
 </body>
 </html>
