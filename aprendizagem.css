@@ -96,7 +96,7 @@ body {
 .main-content {
     flex: 1;
     padding: 1.6rem;
-    display: flex;             
+    display: flex;           
     flex-direction: column; 
 }
 

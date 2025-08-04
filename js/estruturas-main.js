@@ -134,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (action === 'remove' || action === 'transfer') {
             const body = container.querySelector('.structure-body');
-            // CORREÇÃO: Seleciona o elemento correto para a Fila (primeiro) e para a Pilha (último)
             const elementoParaRemover = est instanceof Queue ? body.firstElementChild : body.lastElementChild;
 
             if (elementoParaRemover) {
@@ -144,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     if (action === 'remove') {
                         est instanceof Queue ? est.dequeue() : est.desempilhar();
-                    } else { // Lógica de transferência
+                    } else { 
                         const indexAtual = estruturas.findIndex(s => s.id === id);
                          if (estruturas.length < 2) {
                             exibirMensagem('É preciso ter outra estrutura para transferir.', 'erro');
