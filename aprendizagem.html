@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Adicionado o styles.css para garantir a consistência da sidebar -->
     <link rel="stylesheet" href="styles.css"> 
     <link rel="stylesheet" href="aprendizagem.css"> 
 </head>
@@ -40,7 +39,7 @@
                     </svg>
                     <span>Fila & Pilha</span>
                 </a></li>
-                <li><a href="#" class="sidebar-link disabled">
+                <li><a href="lista.html" class="sidebar-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M2 12h2"></path><path d="M6 12h2"></path><path d="M10 12h2"></path><path d="M14 12h2"></path><path d="M18 12h2"></path><path d="M20 12h2"></path>
                     </svg>
@@ -134,40 +133,40 @@ void remove_da_pilha(struct Pilha *pi) {
             </div>
 
             <!-- Conteúdo da Fila -->
-    <div class="tab-content" id="fila">
-        <h2>Fila (Queue): O Primeiro a Entrar é o Primeiro a Sair (FIFO)</h2>
-        <p>Pense em uma fila de supermercado. A primeira pessoa que chega ao caixa é a primeira a ser atendida e a ir embora. A estrutura de dados de fila funciona exatamente assim. O primeiro elemento que você insere é o primeiro que será removido. Essa lógica é conhecida como <code>FIFO (First-In, First-Out)</code>.</p>
-        
-        <h4>Construindo uma Fila em C</h4>
-        <p>Para criar uma fila, a estrutura do elemento é a mesma da pilha. O que muda é a estrutura de gerenciamento, que agora precisa controlar duas pontas: o início e o fim da fila.</p>
-        
-        <h5>A Estrutura do Elemento (a "Pessoa" na fila)</h5>
-        <p>Assim como na pilha, cada elemento da fila guarda um valor e um ponteiro que aponta para o próximo elemento. Usamos a mesma <code>struct</code>.</p>
-        <pre><code>// Cada elemento (ou nó) da fila
+            <div class="tab-content" id="fila">
+                <h2>Fila (Queue): O Primeiro a Entrar é o Primeiro a Sair (FIFO)</h2>
+                <p>Pense em uma fila de supermercado. A primeira pessoa que chega ao caixa é a primeira a ser atendida e a ir embora. A estrutura de dados de fila funciona exatamente assim. O primeiro elemento que você insere é o primeiro que será removido. Essa lógica é conhecida como <code>FIFO (First-In, First-Out)</code>.</p>
+                
+                <h4>Construindo uma Fila em C</h4>
+                <p>Para criar uma fila, a estrutura do elemento é a mesma da pilha. O que muda é a estrutura de gerenciamento, que agora precisa controlar duas pontas: o início e o fim da fila.</p>
+                
+                <h5>A Estrutura do Elemento (a "Pessoa" na fila)</h5>
+                <p>Assim como na pilha, cada elemento da fila guarda um valor e um ponteiro que aponta para o próximo elemento. Usamos a mesma <code>struct</code>.</p>
+                <pre><code>// Cada elemento (ou nó) da fila
     struct Elemento {
         int num; // O dado que vamos guardar
         struct Elemento *prox; // Ponteiro para o próximo elemento na fila
     };</code></pre>
 
-        <h5>A Estrutura da Fila (o controle do "Caixa")</h5>
-        <p>Para gerenciar a fila, precisamos de dois ponteiros: um para o <code>inicio</code> (o próximo a ser atendido) e um para o <code>fim</code> (onde o próximo elemento vai entrar). Quando a fila está vazia, ambos apontam para <code>NULL</code>.</p>
-        <pre><code>// A estrutura que gerencia a fila
+                <h5>A Estrutura da Fila (o controle do "Caixa")</h5>
+                <p>Para gerenciar a fila, precisamos de dois ponteiros: um para o <code>inicio</code> (o próximo a ser atendido) e um para o <code>fim</code> (onde o próximo elemento vai entrar). Quando a fila está vazia, ambos apontam para <code>NULL</code>.</p>
+                <pre><code>// A estrutura que gerencia a fila
     struct Fila {
         struct Elemento *inicio; // Ponteiro para o início da fila
         struct Elemento *fim;    // Ponteiro para o fim da fila
     };</code></pre>
 
-        <h4>Operações Principais da Fila</h4>
-        <h5>Enfileirar (enqueue)</h5>
-        <p>Para adicionar um novo elemento ao final da fila, seguimos estes passos:</p>
-        <ul>
-            <li>Criamos um novo <code>Elemento</code>.</li>
-            <li>Se a fila estiver vazia, o <code>inicio</code> e o <code>fim</code> apontarão para este novo elemento.</li>
-            <li>Se não, o ponteiro <code>prox</code> do antigo <code>fim</code> apontará para o novo elemento.</li>
-            <li>Por último, atualizamos o <code>fim</code> da fila para ser este novo elemento.</li>
-        </ul>
-        <p>Veja como fica a função em C:</p>
-        <pre><code>// Função para inserir um elemento no fim da fila (enqueue)
+                <h4>Operações Principais da Fila</h4>
+                <h5>Enfileirar (enqueue)</h5>
+                <p>Para adicionar um novo elemento ao final da fila, seguimos estes passos:</p>
+                <ul>
+                    <li>Criamos um novo <code>Elemento</code>.</li>
+                    <li>Se a fila estiver vazia, o <code>inicio</code> e o <code>fim</code> apontarão para este novo elemento.</li>
+                    <li>Se não, o ponteiro <code>prox</code> do antigo <code>fim</code> apontará para o novo elemento.</li>
+                    <li>Por último, atualizamos o <code>fim</code> da fila para ser este novo elemento.</li>
+                </ul>
+                <p>Veja como fica a função em C:</p>
+                <pre><code>// Função para inserir um elemento no fim da fila (enqueue)
     void insere_na_fila(struct Fila *fi, int numero) {
         struct Elemento *novo = (struct Elemento*) malloc(sizeof(struct Elemento));
         if (novo != NULL) {
@@ -184,17 +183,17 @@ void remove_da_pilha(struct Pilha *pi) {
         }
     }</code></pre>
 
-        <h5>Desenfileirar (dequeue)</h5>
-        <p>Para remover o elemento do início da fila, fazemos o seguinte:</p>
-        <ul>
-            <li>Verificamos se a fila não está vazia.</li>
-            <li>Guardamos o endereço do <code>inicio</code> atual em um ponteiro auxiliar.</li>
-            <li>Fazemos o <code>inicio</code> da fila apontar para o elemento seguinte (<code>inicio->prox</code>).</li>
-            <li>Se, após a remoção, a fila ficar vazia, também atualizamos o <code>fim</code> para <code>NULL</code>.</li>
-            <li>Liberamos a memória do elemento que foi removido (o antigo início).</li>
-        </ul>
-        <p>A função em C fica assim:</p>
-        <pre><code>// Função para remover um elemento do início da fila (dequeue)
+                <h5>Desenfileirar (dequeue)</h5>
+                <p>Para remover o elemento do início da fila, fazemos o seguinte:</p>
+                <ul>
+                    <li>Verificamos se a fila não está vazia.</li>
+                    <li>Guardamos o endereço do <code>inicio</code> atual em um ponteiro auxiliar.</li>
+                    <li>Fazemos o <code>inicio</code> da fila apontar para o elemento seguinte (<code>inicio->prox</code>).</li>
+                    <li>Se, após a remoção, a fila ficar vazia, também atualizamos o <code>fim</code> para <code>NULL</code>.</li>
+                    <li>Liberamos a memória do elemento que foi removido (o antigo início).</li>
+                </ul>
+                <p>A função em C fica assim:</p>
+                <pre><code>// Função para remover um elemento do início da fila (dequeue)
     void remove_da_fila(struct Fila *fi) {
         if (fi->inicio == NULL) {
             printf("Fila Vazia!!\n");
@@ -209,15 +208,187 @@ void remove_da_pilha(struct Pilha *pi) {
             free(aux);
         }
     }</code></pre>
-    </div>
+            </div>
 
             <div class="tab-content" id="arvores">
-                <h2>Árvores Binárias</h2>
-                <p>Conteúdo sobre árvores binárias aparecerá aqui.</p>
+                <h2>Entendendo as Árvores Binárias</h2>
+                <p>Em computação, uma "árvore" é uma estrutura de dados que simula uma hierarquia, como uma árvore genealógica. Cada elemento, chamado de <strong>nó</strong>, pode ter "filhos", que são outros nós ligados a ele.</p>
+                
+                <h4>O que é uma Árvore Binária?</h4>
+                <p>Uma árvore binária é um tipo especial de árvore onde cada nó pode ter, no máximo, dois filhos: um à <strong>esquerda</strong> e um à <strong>direita</strong>. O nó no topo da hierarquia, que não tem "pai", é chamado de <strong>raiz</strong> (root).</p>
+
+                <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Diagrama mostrando a estrutura de uma árvore binária simples, destacando a raiz, nós internos, nós folha (sem filhos), e os filhos da esquerda e da direita.</p>
+                </div>
+
+                <h4>Árvores Binárias de Busca (BST - Binary Search Tree)</h4>
+                <p>Uma variação muito importante é a Árvore Binária de Busca. Ela impõe uma regra de ordem para os seus elementos:</p>
+                <ul>
+                    <li>Todos os valores na sub-árvore <strong>esquerda</strong> de um nó são <strong>menores</strong> que o valor do nó.</li>
+                    <li>Todos os valores na sub-árvore <strong>direita</strong> de um nó são <strong>maiores</strong> que o valor do nó.</li>
+                </ul>
+                <p>Essa regra torna a busca por elementos extremamente eficiente, similar a uma pesquisa binária.</p>
+
+                <h4>O Problema: Árvores Desbalanceadas</h4>
+                <p>A eficiência de uma BST depende de sua altura. Se inserirmos elementos de forma ordenada (ex: 10, 20, 30, 40), a árvore se degenera e vira, na prática, uma lista ligada. A busca, que deveria ser rápida, passa a ter o mesmo desempenho de uma busca linear.</p>
+
+                <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Comparação lado a lado: uma árvore de busca balanceada (com aparência de "árvore") e uma desbalanceada (com aparência de "lista").</p>
+                </div>
+
+                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e5e7eb;">
+
+                <h3>A Solução: Árvores AVL</h3>
+                <p>Uma <strong>Árvore AVL</strong> é uma Árvore Binária de Busca <strong>autobalanceável</strong>. Ela garante que a árvore permaneça sempre o mais "cheia" e "compacta" possível, evitando que se degenere em uma lista. O nome AVL vem de seus inventores: Adelson-Velsky e Landis.</p>
+
+                <h4>O Fator de Balanceamento</h4>
+                <p>A mágica da AVL está no controle do <strong>Fator de Balanceamento (FB)</strong> de cada nó. Ele é calculado da seguinte forma:</p>
+                <p><code>FB = (Altura da sub-árvore da esquerda) - (Altura da sub-árvore da direita)</code></p>
+                <p>Em uma árvore AVL, o Fator de Balanceamento de <strong>todos os nós</strong> deve ser sempre <strong>-1, 0 ou 1</strong>. Se, após uma inserção ou remoção, o FB de algum nó se torna -2 ou 2, a árvore está desbalanceada e precisa de um reajuste.</p>
+                
+                <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Diagrama de uma árvore com o Fator de Balanceamento calculado e exibido em cada nó.</p>
+                </div>
+
+                <h4>O Reajuste: Rotações</h4>
+                <p>Quando a árvore fica desbalanceada, a AVL executa operações chamadas <strong>rotações</strong> para corrigir a estrutura. Existem quatro tipos de rotações, que resolvem todos os casos de desbalanceamento.</p>
+
+                <h5>1. Rotação Simples à Direita (Caso Esquerda-Esquerda)</h5>
+                <p>Ocorre quando um novo nó é inserido na sub-árvore esquerda do filho esquerdo de um nó desbalanceado.</p>
+                 <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Animação ou diagrama "antes e depois" mostrando uma Rotação Simples à Direita.</p>
+                </div>
+
+                <h5>2. Rotação Simples à Esquerda (Caso Direita-Direita)</h5>
+                <p>Ocorre quando um novo nó é inserido na sub-árvore direita do filho direito de um nó desbalanceado.</p>
+                <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Animação ou diagrama "antes e depois" mostrando uma Rotação Simples à Esquerda.</p>
+                </div>
+
+                <h5>3. Rotação Dupla à Direita (Caso Esquerda-Direita)</h5>
+                <p>Ocorre quando um novo nó é inserido na sub-árvore direita do filho esquerdo. É uma Rotação à Esquerda seguida de uma Rotação à Direita.</p>
+                <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Animação ou diagrama "antes e depois" mostrando uma Rotação Dupla à Direita.</p>
+                </div>
+
+                <h5>4. Rotação Dupla à Esquerda (Caso Direita-Esquerda)</h5>
+                <p>Ocorre quando um novo nó é inserido na sub-árvore esquerda do filho direito. É uma Rotação à Direita seguida de uma Rotação à Esquerda.</p>
+                <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Animação ou diagrama "antes e depois" mostrando uma Rotação Dupla à Esquerda.</p>
+                </div>
+                
+                <h4>Implementação em C</h4>
+                <p>Para implementar uma árvore AVL, a estrutura do nó precisa armazenar, além dos ponteiros para os filhos, a sua altura (para facilitar o cálculo do Fator de Balanceamento).</p>
+                <pre><code>// Estrutura do nó de uma árvore AVL
+typedef struct no_avl {
+    int valor;
+    int altura; // Altura da sub-árvore com raiz neste nó
+    struct no_avl *esquerda;
+    struct no_avl *direita;
+} NoAVL;</code></pre>
+                <p>As funções de inserção e remoção verificam o Fator de Balanceamento após cada operação e disparam as rotações necessárias para manter a propriedade da AVL.</p>
+
             </div>
+            
             <div class="tab-content" id="listas">
-                <h2>Listas</h2>
-                <p>Conteúdo sobre listas aparecerá aqui.</p>
+                <h2>Desvendando as Listas Ligadas (Linked Lists)</h2>
+                <p>Diferente de um array, que armazena dados em um bloco contínuo de memória, uma <strong>Lista Ligada</strong> (ou Encadeada) é uma coleção de elementos, chamados de <strong>nós</strong>, que podem estar espalhados pela memória. A mágica está em como eles se conectam: cada nó guarda, além do seu próprio dado, um "endereço" que aponta para o próximo nó da sequência.</p>
+
+                <h4>O que é um Nó?</h4>
+                <p>O "nó" (ou `node` em inglês) é o bloco de construção fundamental de uma lista. Ele é composto por duas partes principais:</p>
+                <ul>
+                    <li><strong>Dado:</strong> A informação que queremos armazenar (um número, um nome, etc.).</li>
+                    <li><strong>Ponteiro (ou referência):</strong> Um endereço de memória que "aponta" para o próximo nó da lista. O ponteiro do último nó aponta para <code>NULL</code>, indicando o fim da sequência.</li>
+                </ul>
+                <p>Em C, representamos um nó com uma <code>struct</code>:</p>
+                <pre><code>// Estrutura de um nó da lista
+typedef struct no {
+    int dado;               // Onde o valor é armazenado
+    struct no *proximo;    // Ponteiro para o próximo nó
+} No;</code></pre>
+                
+                <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Diagrama mostrando um único nó, com uma caixa para o "dado" e outra para o ponteiro "próximo".</p>
+                </div>
+
+                <h4>A Lista Completa</h4>
+                <p>A lista inteira é gerenciada através de um único ponteiro, geralmente chamado de <code>inicio</code> ou <code>head</code>, que aponta apenas para o primeiro nó. A partir dele, conseguimos percorrer toda a lista, seguindo os ponteiros de um nó para o outro até encontrar um <code>NULL</code>.</p>
+                
+                <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Diagrama de uma lista ligada completa com 3 nós. O ponteiro "inicio" aponta para o primeiro nó. O último nó aponta para NULL.</p>
+                </div>
+                
+                <h4>Operações Fundamentais</h4>
+                <h5>Inserção de um Novo Nó</h5>
+                <p>Inserir um elemento é uma das grandes vantagens da lista ligada, pois não precisamos deslocar outros elementos como em um array. Apenas manipulamos os ponteiros.</p>
+                <p><strong>Para inserir no início (a operação mais eficiente):</strong></p>
+                <ol>
+                    <li>Cria-se um novo nó.</li>
+                    <li>O ponteiro "próximo" do novo nó aponta para o antigo primeiro nó (o atual <code>inicio</code>).</li>
+                    <li>O ponteiro <code>inicio</code> da lista é atualizado para apontar para este novo nó.</li>
+                </ol>
+
+                <pre><code>// Função para inserir um nó no início da lista
+void inserir_no_inicio(No **inicio, int valor) {
+    No *novo_no = malloc(sizeof(No));
+    if (novo_no) {
+        novo_no->dado = valor;
+        novo_no->proximo = *inicio;
+        *inicio = novo_no;
+    }
+}</code></pre>
+
+                 <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Passo a passo visual da inserção de um nó no início da lista.</p>
+                </div>
+                
+                <h5>Remoção de um Nó</h5>
+                <p>Remover um nó também envolve a manipulação de ponteiros. Para remover o primeiro nó, por exemplo:</p>
+                <ol>
+                    <li>Guarda-se o endereço do segundo nó em um ponteiro auxiliar.</li>
+                    <li>Libera-se a memória do primeiro nó (o atual <code>inicio</code>).</li>
+                    <li>O ponteiro <code>inicio</code> da lista é atualizado para apontar para o segundo nó.</li>
+                </ol>
+
+                <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Passo a passo visual da remoção do primeiro nó da lista.</p>
+                </div>
+                
+                <h4>Tipos de Listas Ligadas</h4>
+                <p>Além da lista que vimos (Simplesmente Ligada), existem outras variações importantes:</p>
+                <ul>
+                    <li><strong>Lista Duplamente Ligada:</strong> Cada nó tem dois ponteiros: um para o próximo nó e outro para o nó <strong>anterior</strong>. Isso permite percorrer a lista em ambas as direções (frente e trás), mas consome um pouco mais de memória.</li>
+                    <li><strong>Lista Circular:</strong> O ponteiro do último nó, em vez de apontar para <code>NULL</code>, aponta de volta para o primeiro nó, criando um ciclo.</li>
+                </ul>
+                
+                <div class="visual-placeholder">
+                    <strong>[IMAGEM AQUI]</strong>
+                    <p>Diagrama comparando uma lista simplesmente ligada, uma duplamente ligada e uma circular.</p>
+                </div>
+
+                <h4>Vantagens vs. Desvantagens</h4>
+                <h5>Vantagens:</h5>
+                <ul>
+                    <li><strong>Tamanho Dinâmico:</strong> Crescem e diminuem facilmente em tempo de execução.</li>
+                    <li><strong>Inserção/Remoção Eficiente:</strong> Especialmente no início e fim, essas operações são muito rápidas (O(1)).</li>
+                </ul>
+                <h5>Desvantagens:</h5>
+                <ul>
+                    <li><strong>Acesso Sequencial:</strong> Para acessar um elemento no meio da lista, é preciso percorrer todos os nós desde o início (O(n)), diferente de um array que tem acesso direto (O(1)).</li>
+                    <li><strong>Mais Memória:</strong> Gastam memória extra para armazenar os ponteiros.</li>
+                </ul>
+
             </div>
         </div>
     </main>

@@ -230,3 +230,20 @@ body {
 .main-content li {
     margin-bottom: 0.4rem;
 }
+
+/* --- ESTILO PARA MARCADOR DE IMAGEM --- */
+.visual-placeholder {
+    background-color: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    text-align: center;
+    color: #6b7280;
+}
+
+.visual-placeholder strong {
+    color: #1f2937;
+    display: block;
+    margin-bottom: 0.5rem;
+}
