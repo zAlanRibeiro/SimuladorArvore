@@ -1,4 +1,3 @@
-/* General Body and Layout */
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
@@ -8,32 +7,31 @@ body {
     font-size: 0.8rem;
 }
 
-/* Sidebar */
 .sidebar {
     background-color: #1a202c;
     color: white;
-    width: 12.8rem; /* Reduzido de 16rem */
+    width: 12.8rem; 
     min-height: 100vh;
-    padding: 0.8rem; /* Reduzido de 1rem */
+    padding: 0.8rem; 
     flex-shrink: 0;
 }
 
 .sidebar-header {
     display: flex;
     align-items: center;
-    margin-bottom: 1.6rem; /* Reduzido de 2rem */
+    margin-bottom: 1.6rem;
 }
 
 .sidebar-header h1 {
-    font-size: 1rem; /* Reduzido de 1.25rem */
+    font-size: 1rem; 
     font-weight: 700;
 }
 
 .sidebar-logo {
     color: #48bb78;
-    height: 1.6rem; /* Reduzido de 2rem */
-    width: 1.6rem; /* Reduzido de 2rem */
-    margin-right: 0.6rem; /* Reduzido de 0.75rem */
+    height: 1.6rem; 
+    width: 1.6rem; 
+    margin-right: 0.6rem; 
     flex-shrink: 0;
 }
 
@@ -43,13 +41,13 @@ body {
 }
 
 .sidebar nav li {
-    margin-bottom: 0.4rem; /* Reduzido de 0.5rem */
+    margin-bottom: 0.4rem;
 }
 
 .sidebar-link {
     display: flex;
     align-items: center;
-    padding: 0.6rem; /* Reduzido de 0.75rem */
+    padding: 0.6rem; 
     border-radius: 0.5rem;
     text-decoration: none;
     color: white;
@@ -76,16 +74,15 @@ body {
 }
 
 .sidebar-link svg {
-    height: 1rem; /* Reduzido de 1.25rem */
-    width: 1rem; /* Reduzido de 1.25rem */
-    margin-right: 0.6rem; /* Reduzido de 0.75rem */
+    height: 1rem; 
+    width: 1rem; 
+    margin-right: 0.6rem; 
     flex-shrink: 0;
 }
 
-/* Main Content Area */
 .main-content {
     flex: 1;
-    padding: 1.6rem; /* Reduzido de 2rem */
+    padding: 1.6rem; 
     display: flex;
     flex-direction: column;
 }
@@ -94,22 +91,22 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.2rem; /* Reduzido de 1.5rem */
-    padding-bottom: 0.8rem; /* Reduzido de 1rem */
+    margin-bottom: 1.2rem; 
+    padding-bottom: 0.8rem;
     border-bottom: 1px solid #e5e7eb;
 }
 
 .main-header h2 {
-    font-size: 1.5rem; /* Reduzido de 1.875rem */
+    font-size: 1.5rem; 
     font-weight: 700;
 }
 
 .mensagem {
-    padding: 0.8rem; /* Reduzido de 1rem */
+    padding: 0.8rem; 
     border-radius: 0.5rem;
     font-weight: 500;
     text-align: center;
-    margin-bottom: 1.2rem; /* Reduzido de 1.5rem */
+    margin-bottom: 1.2rem; 
     display: none;
 }
 .mensagem-sucesso {
@@ -123,8 +120,8 @@ body {
 
 .controls-container {
     display: flex;
-    gap: 1.2rem; /* Reduzido de 1.5rem */
-    margin-bottom: 1.2rem; /* Reduzido de 1.5rem */
+    gap: 1.2rem; 
+    margin-bottom: 1.2rem; 
     flex-wrap: wrap;
 }
 
@@ -135,11 +132,11 @@ body {
 
 .input-field {
     flex-grow: 1;
-    padding: 0.6rem 0.8rem; /* Reduzido de 0.75rem 1rem */
+    padding: 0.6rem 0.8rem;
     border: 1px solid #d1d5db;
     border-radius: 0.5rem 0 0 0.5rem;
-    font-size: 0.8rem; /* Reduzido de 1rem */
-    min-width: 120px; /* Reduzido de 150px */
+    font-size: 0.8rem; 
+    min-width: 120px; 
 }
 .input-field:focus {
     outline: none;
@@ -148,10 +145,10 @@ body {
 }
 
 .btn {
-    padding: 0.6rem 1.2rem; /* Reduzido de 0.75rem 1.5rem */
+    padding: 0.6rem 1.2rem; 
     border: 1px solid transparent;
     border-radius: 0.5rem;
-    font-size: 0.8rem; /* Reduzido de 1rem */
+    font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
@@ -190,32 +187,32 @@ body {
 
 .percurso-section {
     background-color: white;
-    padding: 1.2rem; /* Reduzido de 1.5rem */
+    padding: 1.2rem; 
     border-radius: 0.75rem;
-    margin-bottom: 1.2rem; /* Reduzido de 1.5rem */
+    margin-bottom: 1.2rem; 
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.8rem; /* Reduzido de 1rem */
+    gap: 0.8rem; 
 }
 .percurso-section fieldset {
     border: none;
     display: flex;
     align-items: center;
-    gap: 1.2rem; /* Reduzido de 1.5rem */
+    gap: 1.2rem; 
     padding: 0;
     margin: 0;
 }
 .percurso-section legend {
     font-weight: 600;
-    font-size: 0.9rem; /* Reduzido de 1.1rem */
-    margin-right: 0.8rem; /* Reduzido de 1rem */
+    font-size: 0.9rem; 
+    margin-right: 0.8rem; 
 }
 .radio-group {
     display: flex;
-    gap: 1.2rem; /* Reduzido de 1.5rem */
+    gap: 1.2rem; 
 }
 .radio-group label {
     cursor: pointer;
@@ -225,14 +222,14 @@ body {
 .canvas-container {
     flex-grow: 1;
     background-color: white;
-    padding: 0.8rem; /* Reduzido de 1rem */
+    padding: 0.8rem; 
     border-radius: 0.75rem;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     overflow: auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1.2rem; /* Reduzido de 1.5rem */
+    margin-bottom: 1.2rem; 
     position: relative;
 }
 #tree-canvas {
@@ -243,12 +240,12 @@ body {
 
 .animation-subtitle {
     text-align: center;
-    font-size: 0.9rem; /* Reduzido de 1.125rem */
+    font-size: 0.9rem; 
     font-weight: 500;
     color: #1f2937;
     height: 1.5em;
     line-height: 1.5em;
-    margin-bottom: 0.8rem; /* Reduzido de 1rem */
+    margin-bottom: 0.8rem; 
     transition: color 0.3s ease-in-out;
 }
 
@@ -256,9 +253,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.6rem; /* Reduzido de 0.75rem */
+    gap: 0.6rem; 
     margin-top: auto;
-    padding-top: 1.2rem; /* Reduzido de 1.5rem */
+    padding-top: 1.2rem; 
     border-top: 1px solid #e5e7eb;
 }
 .navigation-controls .btn {
@@ -273,8 +270,8 @@ body {
 .speed-control-group {
     display: flex;
     align-items: center;
-    gap: 0.4rem; /* Reduzido de 0.5rem */
-    padding: 0 0.8rem; /* Reduzido de 0 1rem */
+    gap: 0.4rem; 
+    padding: 0 0.8rem; 
     color: #374151;
     font-weight: 500;
 }
@@ -284,5 +281,5 @@ body {
     stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
-    stroke: currentColor; /* Mágica! O ícone herdará a cor do texto do link. */
+    stroke: currentColor; 
 }

@@ -3,17 +3,17 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: #f3f4f6; 
     display: flex;
-    font-size: 0.8rem; /* Tamanho da fonte base reduzido */
+    font-size: 0.8rem; 
     color: #374151;
-    align-items: flex-start; /* Essencial para a sidebar sticky */
+    align-items: flex-start; 
 }
 
 .sidebar {
     background-color: #1a202c;
     color: white;
-    width: 12.8rem; /* Reduzido */
-    height: 100vh; /* Garante a altura total para o sticky funcionar */
-    padding: 0.8rem; /* Reduzido */
+    width: 12.8rem; 
+    height: 100vh; 
+    padding: 0.8rem; 
     flex-shrink: 0;
     position: sticky;
     top: 0;
@@ -23,19 +23,19 @@ body {
 .sidebar-header {
     display: flex;
     align-items: center;
-    margin-bottom: 1.6rem; /* Reduzido */
+    margin-bottom: 1.6rem; 
 }
 
 .sidebar-header h1 {
-    font-size: 1rem; /* Reduzido */
+    font-size: 1rem; 
     font-weight: 700; 
 }
 
 .sidebar-logo {
     color: #48bb78; 
-    height: 1.6rem; /* Reduzido */
-    width: 1.6rem; /* Reduzido */
-    margin-right: 0.6rem; /* Reduzido */
+    height: 1.6rem; 
+    width: 1.6rem; 
+    margin-right: 0.6rem; 
     flex-shrink: 0;
 }
 
@@ -45,13 +45,13 @@ body {
 }
 
 .sidebar nav li {
-    margin-bottom: 0.4rem; /* Reduzido */
+    margin-bottom: 0.4rem;
 }
 
 .sidebar-link {
     display: flex;
     align-items: center;
-    padding: 0.6rem; /* Reduzido */
+    padding: 0.6rem; 
     border-radius: 0.5rem; 
     text-decoration: none;
     color: white;
@@ -79,9 +79,9 @@ body {
 }
 
 .sidebar-link svg {
-    height: 1rem; /* Reduzido */
-    width: 1rem; /* Reduzido */
-    margin-right: 0.6rem; /* Reduzido */
+    height: 1rem; 
+    width: 1rem; 
+    margin-right: 0.6rem;
     flex-shrink: 0;
 }
 
@@ -100,7 +100,6 @@ body {
     flex-direction: column; 
 }
 
-/* --- ESTILOS PARA ABAS DE NAVEGAÇÃO --- */
 .tabs-nav {
     display: flex;
     border-bottom: 1px solid #d1d5db;
@@ -114,12 +113,12 @@ body {
 
 .tab-link {
     font-family: 'Inter', sans-serif;
-    padding: 0.6rem 1.2rem; /* Reduzido */
+    padding: 0.6rem 1.2rem; 
     cursor: pointer;
     background-color: transparent;
     border: none;
     border-bottom: 3px solid transparent;
-    font-size: 0.8rem; /* Reduzido */
+    font-size: 0.8rem; 
     font-weight: 600;
     color: #6b7280;
     transition: all 0.2s ease-in-out;
@@ -135,10 +134,9 @@ body {
     border-bottom-color: #48bb78;
 }
 
-/* --- ESTILOS PARA CONTEÚDO DENTRO DAS ABAS --- */
 .content-wrapper {
     background-color: white;
-    padding: 1.2rem; /* Reduzido */
+    padding: 1.2rem;
     border-radius: 0.5rem;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     flex: 1; 
@@ -152,7 +150,6 @@ body {
     display: block;
 }
 
-/* --- ESTILOS DE TIPOGRAFIA (AJUSTADOS PARA TAMANHO COMPACTO) --- */
 .main-content h1 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -187,7 +184,7 @@ body {
 .main-content p {
     line-height: 1.6;
     margin-bottom: 1rem;
-    font-size: 0.8rem; /* Alinhado com a fonte base */
+    font-size: 0.8rem; 
 }
 
 .main-content a {
@@ -231,7 +228,6 @@ body {
     margin-bottom: 0.4rem;
 }
 
-/* --- ESTILO PARA MARCADOR DE IMAGEM --- */
 .visual-placeholder {
     background-color: #f9fafb;
     border: 2px dashed #d1d5db;
