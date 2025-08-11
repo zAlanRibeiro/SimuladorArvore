@@ -126,7 +126,7 @@ async function animarInsercao(valor, posicao) {
     }
 
     let shiftConfig = null;
-    if (listaAtual.length > 0 && posicao <= listaAtual.length) {
+    if (listaAtual.length >= 0 && posicao <= listaAtual.length) { 
         shiftConfig = calcularDeslocamento(posicao);
         desenharLista(null, shiftConfig);
         await sleep(500);
@@ -174,7 +174,7 @@ function animarVoo(targetX, targetY, shiftConfig, insertData) {
 async function animarRemocao(valor) {
     const posicao = listaAtual.encontrarPosicao(valor);
     if (posicao === -1) {
-        alert('Valor não encontrado na lista!');
+        exibirMensagem('Valor não encontrado na lista!');
         return false;
     }
 
@@ -225,7 +225,7 @@ async function animarRemocao(valor) {
 async function animarBusca(valor) {
     const posicao = listaAtual.encontrarPosicao(valor);
     if (posicao === -1) {
-        alert('Valor não encontrado na lista!');
+        exibirMensagem(`Valor ${valor} não encontrado na lista!`);
         return null;
     }
 
@@ -261,7 +261,7 @@ async function animarBusca(valor) {
 async function animarBuscaReversa(valor) {
     const noEncontrado = listaAtual.buscarDoFim(valor);
     if (!noEncontrado) {
-        alert('Valor não encontrado na lista!');
+        exibirMensagem(`Valor ${valor} não encontrado na lista!`);
         return;
     }
 
@@ -343,7 +343,8 @@ async function animarInversao() {
     desenharLista();
     await sleep(2000);
     setAnimationCaption();
-    document.getElementById('variable-display').style.display = 'none';
+    const varDisplay = document.getElementById('variable-display');
+    if (varDisplay) varDisplay.style.display = 'none';
 }
 
 function drawCircularPointer(canvas, firstEl, lastEl) {
@@ -544,7 +545,7 @@ function alternarControles(habilitar) {
 function escolherLista() {
     const tipoListaInput = document.querySelector('input[name="tipo_lista"]:checked');
     if (!tipoListaInput) {
-        alert('Por favor, selecione um tipo de lista primeiro!');
+        exibirMensagem('Por favor, selecione um tipo de lista primeiro!');
         return;
     }
     
@@ -576,7 +577,7 @@ async function acaoInserir() {
     const posicaoStr = inputPosicao.value.trim();
 
     if (!valor) {
-        alert('Por favor, insira um valor.');
+        exibirMensagem('Por favor, insira um valor.');
         return;
     }
 
@@ -589,7 +590,7 @@ async function acaoInserir() {
     } else {
         const posicao = parseInt(posicaoStr, 10);
         if (isNaN(posicao) || posicao < 0 || posicao > listaAtual.length) {
-            alert('Posição inválida!');
+            exibirMensagem('Posição inválida!');
             alternarControles(true);
             return;
         }
@@ -610,15 +611,17 @@ async function acaoRemover() {
     const valor = inputValor.value.trim();
 
     if (!valor) {
-        alert('Por favor, insira um valor para remover.');
+        exibirMensagem('Por favor, insira um valor para remover.');
         return;
     }
 
     alternarControles(false);
     canvas.classList.add('remove-mode');
-    await animarRemocao(valor);
-    listaAtual.removerValor(valor); 
-    desenharLista();
+    const success = await animarRemocao(valor);
+    if (success) {
+        listaAtual.removerValor(valor); 
+        desenharLista();
+    }
     
     canvas.classList.remove('remove-mode');
     alternarControles(true);
@@ -632,7 +635,7 @@ async function acaoBuscar() {
     const valor = inputValor.value.trim();
 
     if (!valor) {
-        alert('Por favor, insira um valor para buscar.');
+        exibirMensagem('Por favor, insira um valor para buscar.');
         return;
     }
 
@@ -653,7 +656,7 @@ async function acaoBuscarReversa() {
     const valor = inputValor.value.trim();
 
     if (!valor) {
-        alert('Por favor, insira um valor para buscar.');
+        exibirMensagem('Por favor, insira um valor para buscar.');
         return;
     }
 

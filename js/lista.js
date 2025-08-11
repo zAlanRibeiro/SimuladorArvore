@@ -140,17 +140,28 @@ class ListaDuplamenteEncadeada extends ListaSimplesmenteEncadeada {
         const novoNo = new Node(valor);
         if (posicao === 0) {
             novoNo.proximo = this.inicio;
-            if (this.inicio) this.inicio.anterior = novoNo;
+            if (this.inicio) {
+                this.inicio.anterior = novoNo;
+            } else {
+                this.fim = novoNo; // Se a lista estava vazia
+            }
             this.inicio = novoNo;
         } else {
-            let atual = this.inicio;
-            for (let i = 0; i < posicao; i++) {
-                atual = atual.proximo;
+            let noAnterior = this.inicio;
+            for (let i = 0; i < posicao - 1; i++) {
+                noAnterior = noAnterior.proximo;
             }
-            novoNo.proximo = atual;
-            novoNo.anterior = atual.anterior;
-            if (atual.anterior) atual.anterior.proximo = novoNo;
-            atual.anterior = novoNo;
+            const noSeguinte = noAnterior.proximo;
+
+            novoNo.proximo = noSeguinte;
+            novoNo.anterior = noAnterior;
+
+            noAnterior.proximo = novoNo;
+            if (noSeguinte) {
+                noSeguinte.anterior = novoNo;
+            } else {
+                this.fim = novoNo; // Se inseriu no final
+            }
         }
         this.length++;
         return true;
@@ -170,6 +181,15 @@ class ListaDuplamenteEncadeada extends ListaSimplesmenteEncadeada {
         this.length--;
     }
 
+    buscar(valor) {
+        if (!this.inicio) return null;
+        let noAtual = this.inicio;
+        while (noAtual !== null && noAtual.valor != valor) {
+            noAtual = noAtual.proximo;
+        }
+        return noAtual;
+    }
+
     buscarDoFim(valor) {
         if (!this.fim) return null;
         let noAtual = this.fim;
@@ -182,22 +202,21 @@ class ListaDuplamenteEncadeada extends ListaSimplesmenteEncadeada {
     inverter() {
         if (this.length <= 1) return;
 
-        let temp = null;
         let atual = this.inicio;
+        let temp = null;
 
-        while (atual !== null) {
+        // Troca os ponteiros anterior e proximo de todos os nós
+        while (atual) {
             temp = atual.anterior;
             atual.anterior = atual.proximo;
             atual.proximo = temp;
-            this.inicio = atual;
-            atual = atual.anterior;
+            atual = atual.anterior; // Move para o próximo nó (que agora é o 'anterior')
         }
 
-        let noFim = this.inicio;
-        while(noFim && noFim.proximo) {
-            noFim = noFim.proximo;
-        }
-        this.fim = noFim;
+        // Troca o início e o fim da lista
+        temp = this.inicio;
+        this.inicio = this.fim;
+        this.fim = temp;
     }
 }
 

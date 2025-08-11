@@ -218,8 +218,8 @@ void remove_da_pilha(struct Pilha *pi) {
                 <p>Uma árvore binária é um tipo especial de árvore onde cada nó pode ter, no máximo, dois filhos: um à <strong>esquerda</strong> e um à <strong>direita</strong>. O nó no topo da hierarquia, que não tem "pai", é chamado de <strong>raiz</strong> (root).</p>
 
                 <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
-                    <p>Diagrama mostrando a estrutura de uma árvore binária simples, destacando a raiz, nós internos, nós folha (sem filhos), e os filhos da esquerda e da direita.</p>
+                    <img src="assets/arvoreBinariaAvl.png">
+                    <p>Diagrama mostrando a estrutura de uma árvore binária simples, destacando a raiz, nós internos, nós folha, e os filhos da esquerda e da direita.</p>
                 </div>
 
                 <h4>Árvores Binárias de Busca (BST - Binary Search Tree)</h4>
@@ -234,7 +234,7 @@ void remove_da_pilha(struct Pilha *pi) {
                 <p>A eficiência de uma BST depende de sua altura. Se inserirmos elementos de forma ordenada (ex: 10, 20, 30, 40), a árvore se degenera e vira, na prática, uma lista ligada. A busca, que deveria ser rápida, passa a ter o mesmo desempenho de uma busca linear.</p>
 
                 <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
+                    <img src="assets/balanceamento.png" alt="balanceamento correto" width="50%"><img src="assets/balanceamentoErro.png" alt="balanceamento incorreto" width="50%">
                     <p>Comparação lado a lado: uma árvore de busca balanceada (com aparência de "árvore") e uma desbalanceada (com aparência de "lista").</p>
                 </div>
 
@@ -247,11 +247,6 @@ void remove_da_pilha(struct Pilha *pi) {
                 <p>A mágica da AVL está no controle do <strong>Fator de Balanceamento (FB)</strong> de cada nó. Ele é calculado da seguinte forma:</p>
                 <p><code>FB = (Altura da sub-árvore da esquerda) - (Altura da sub-árvore da direita)</code></p>
                 <p>Em uma árvore AVL, o Fator de Balanceamento de <strong>todos os nós</strong> deve ser sempre <strong>-1, 0 ou 1</strong>. Se, após uma inserção ou remoção, o FB de algum nó se torna -2 ou 2, a árvore está desbalanceada e precisa de um reajuste.</p>
-                
-                <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
-                    <p>Diagrama de uma árvore com o Fator de Balanceamento calculado e exibido em cada nó.</p>
-                </div>
 
                 <h4>O Reajuste: Rotações</h4>
                 <p>Quando a árvore fica desbalanceada, a AVL executa operações chamadas <strong>rotações</strong> para corrigir a estrutura. Existem quatro tipos de rotações, que resolvem todos os casos de desbalanceamento.</p>
@@ -259,28 +254,28 @@ void remove_da_pilha(struct Pilha *pi) {
                 <h5>1. Rotação Simples à Direita (Caso Esquerda-Esquerda)</h5>
                 <p>Ocorre quando um novo nó é inserido na sub-árvore esquerda do filho esquerdo de um nó desbalanceado.</p>
                  <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
+                    <img src="assets/rotaçao simples esquerda.gif" alt="rotaçao simples esquerda">
                     <p>Animação ou diagrama "antes e depois" mostrando uma Rotação Simples à Direita.</p>
                 </div>
 
                 <h5>2. Rotação Simples à Esquerda (Caso Direita-Direita)</h5>
                 <p>Ocorre quando um novo nó é inserido na sub-árvore direita do filho direito de um nó desbalanceado.</p>
                 <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
+                    <img src="assets/rotaçao simples direita.gif" alt="rotaçao simples direita">
                     <p>Animação ou diagrama "antes e depois" mostrando uma Rotação Simples à Esquerda.</p>
                 </div>
 
                 <h5>3. Rotação Dupla à Direita (Caso Esquerda-Direita)</h5>
                 <p>Ocorre quando um novo nó é inserido na sub-árvore direita do filho esquerdo. É uma Rotação à Esquerda seguida de uma Rotação à Direita.</p>
                 <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
+                    <img src="assets/rotaçao dupla direita.gif" alt="rotaçao dupla direita">
                     <p>Animação ou diagrama "antes e depois" mostrando uma Rotação Dupla à Direita.</p>
                 </div>
 
                 <h5>4. Rotação Dupla à Esquerda (Caso Direita-Esquerda)</h5>
                 <p>Ocorre quando um novo nó é inserido na sub-árvore esquerda do filho direito. É uma Rotação à Direita seguida de uma Rotação à Esquerda.</p>
                 <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
+                    <img src="assets/rotaçao dupla esquerda.gif" alt="rotaçao dupla esquerda">
                     <p>Animação ou diagrama "antes e depois" mostrando uma Rotação Dupla à Esquerda.</p>
                 </div>
                 
@@ -315,16 +310,16 @@ typedef struct no {
 } No;</code></pre>
                 
                 <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
-                    <p>Diagrama mostrando um único nó, com uma caixa para o "dado" e outra para o ponteiro "próximo".</p>
+                    <img src="assets/lista simples.png" alt="lista simples" width="75%">
+                    <p>lista com apenas um nó apontando para NULL.</p>
                 </div>
 
                 <h4>A Lista Completa</h4>
                 <p>A lista inteira é gerenciada através de um único ponteiro, geralmente chamado de <code>inicio</code> ou <code>head</code>, que aponta apenas para o primeiro nó. A partir dele, conseguimos percorrer toda a lista, seguindo os ponteiros de um nó para o outro até encontrar um <code>NULL</code>.</p>
                 
                 <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
-                    <p>Diagrama de uma lista ligada completa com 3 nós. O ponteiro "inicio" aponta para o primeiro nó. O último nó aponta para NULL.</p>
+                    <img src="assets/lista simples completa.png" alt="lista simples completa" width="75%">
+                    <p>Lista completa sendo o ponteiro do ultimo nó apontando para NULL.</p>
                 </div>
                 
                 <h4>Operações Fundamentais</h4>
@@ -348,8 +343,8 @@ void inserir_no_inicio(No **inicio, int valor) {
 }</code></pre>
 
                  <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
-                    <p>Passo a passo visual da inserção de um nó no início da lista.</p>
+                    <img src="assets/inserçao lista.gif" alt="inserçao na lista simples">
+                    <p>Passo a passo de uma inserção em uma lista simples.</p>
                 </div>
                 
                 <h5>Remoção de um Nó</h5>
@@ -361,8 +356,8 @@ void inserir_no_inicio(No **inicio, int valor) {
                 </ol>
 
                 <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
-                    <p>Passo a passo visual da remoção do primeiro nó da lista.</p>
+                    <img src="assets/remoçao na lista simples.gif" alt="remoçao na lista simples">
+                    <p>Passo a passo de uma remoçao de um nó na lista simples</p>
                 </div>
                 
                 <h4>Tipos de Listas Ligadas</h4>
@@ -373,8 +368,8 @@ void inserir_no_inicio(No **inicio, int valor) {
                 </ul>
                 
                 <div class="visual-placeholder">
-                    <strong>[IMAGEM AQUI]</strong>
-                    <p>Diagrama comparando uma lista simplesmente ligada, uma duplamente ligada e uma circular.</p>
+                    <img src="assets/lisat duplamente ligada.png" alt="lista duplamente ligada" width="50%"><img src="assets/lista circular.png"alt="lista circular" width="39%">
+                    <p> lista duplamente ligada e uma circular.</p>
                 </div>
 
                 <h4>Vantagens vs. Desvantagens</h4>
