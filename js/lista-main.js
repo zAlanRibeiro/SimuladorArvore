@@ -4,6 +4,62 @@ let highlightedElements = new Set();
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+function setAnimationCaption(text = '') {
+    const canvas = document.getElementById('list-canvas');
+    let captionEl = document.getElementById('animation-caption');
+
+    if (text) {
+        if (!captionEl) {
+            captionEl = document.createElement('div');
+            captionEl.id = 'animation-caption';
+            captionEl.className = 'animation-caption';
+            canvas.appendChild(captionEl);
+        }
+        captionEl.innerHTML = text;
+        captionEl.style.display = 'block';
+    } else {
+        if (captionEl) {
+            captionEl.style.display = 'none';
+        }
+    }
+}
+
+function updateVariableDisplay(anterior, atual, proximo) {
+    const canvas = document.getElementById('list-canvas');
+    let displayEl = document.getElementById('variable-display');
+
+    if (!displayEl) {
+        displayEl = document.createElement('div');
+        displayEl.id = 'variable-display';
+        displayEl.className = 'variable-display';
+        canvas.appendChild(displayEl);
+    }
+
+    const antVal = anterior ? anterior.valor : 'NULL';
+    const atuVal = atual ? atual.valor : 'NULL';
+    const proxVal = proximo ? proximo.valor : 'NULL';
+
+    const anteriorLabel = (listaAtual instanceof ListaDuplamenteEncadeada) 
+        ? "NÓ ANTERIOR" 
+        : "VAR ANTERIOR";
+
+    displayEl.innerHTML = `
+        <div class="variable-box">
+            <div class="label">${anteriorLabel}</div>
+            <div class="value" style="background-color: #a7f3d0;">${antVal}</div>
+        </div>
+        <div class="variable-box">
+            <div class="label">ATUAL</div>
+            <div class="value" style="background-color: #fde047;">${atuVal}</div>
+        </div>
+        <div class="variable-box">
+            <div class="label">PRÓXIMO</div>
+            <div class="value" style="background-color: #a5f3fc;">${proxVal}</div>
+        </div>
+    `;
+    displayEl.style.display = 'flex';
+}
+
 function calcularDeslocamento(posicao) {
     const nodeWidth = 60;
     const pointerWidth = 40;
@@ -11,7 +67,6 @@ function calcularDeslocamento(posicao) {
     const gap = listContainer ? parseFloat(window.getComputedStyle(listContainer).gap) : 24;
     
     const shiftDistance = nodeWidth + gap + pointerWidth;
-    
     const shiftStartIndex = posicao * 2;
 
     return { shiftStartIndex, shiftDistance };
@@ -64,7 +119,7 @@ async function animarInsercao(valor, posicao) {
             const pointerWidth = 40;
             targetX = (lastWrapperRect.right - canvasRect.left) + gap + pointerWidth + gap + (nodeWidth / 2);
         }
-    } else { 
+    } else {
         const targetWrapperEl = allNodeWrappers[posicao];
         const targetWrapperRect = targetWrapperEl.getBoundingClientRect();
         targetX = (targetWrapperRect.left - canvasRect.left) + (targetWrapperRect.width / 2);
@@ -203,12 +258,170 @@ async function animarBusca(valor) {
     }, 2500);
 }
 
+async function animarBuscaReversa(valor) {
+    const noEncontrado = listaAtual.buscarDoFim(valor);
+    if (!noEncontrado) {
+        alert('Valor não encontrado na lista!');
+        return;
+    }
 
-function desenharLista(noDestacado = null, shiftConfig = null) {
+    let noAtual = listaAtual.fim;
+    let index = listaAtual.length - 1;
+    while(noAtual !== null) {
+        highlightedElements.add(`node-${index}`);
+        desenharLista();
+        await sleep(700);
+
+        if (noAtual.valor == valor) break;
+
+        highlightedElements.delete(`node-${index}`);
+        highlightedElements.add(`back-pointer-${index}`);
+        desenharLista();
+        await sleep(700);
+        highlightedElements.delete(`back-pointer-${index}`);
+        
+        noAtual = noAtual.anterior;
+        index--;
+    }
+
+    highlightedElements.clear();
+    desenharLista(noEncontrado);
+    setTimeout(() => desenharLista(), 2500);
+}
+
+async function animarLimpeza() {
+    const wrappers = document.querySelectorAll('.node-wrapper');
+    wrappers.forEach((wrapper, i) => {
+        setTimeout(() => {
+            wrapper.classList.add('removing');
+        }, i * 100);
+    });
+    await sleep(wrappers.length * 100 + 500);
+    listaAtual.limpar();
+    desenharLista();
+}
+
+async function animarInversao() {
+    if (listaAtual.length <= 1) return;
+
+    let noAnterior = null;
+    let noAtual = listaAtual.inicio;
+    let noProximo = null;
+
+    for (let i = 0; i < listaAtual.length; i++) {
+        noProximo = noAtual.proximo;
+
+        updateVariableDisplay(noAnterior, noAtual, noProximo);
+        if(noAnterior) noAnterior.highlight = 'highlight-dest';
+        if(noAtual) noAtual.highlight = 'highlight';
+        if(noProximo) noProximo.highlight = 'highlight-aux';
+        desenharLista();
+        await sleep(2000);
+
+        setAnimationCaption(`Desligando o ponteiro 'próximo' do nó <b>${noAtual.valor}</b>.`);
+        desenharLista(null, null, { brokenPointer: i });
+        await sleep(1500);
+
+        setAnimationCaption(`Religando o ponteiro 'próximo' do nó <b>${noAtual.valor}</b> para <b>${noAnterior ? noAnterior.valor : 'NULL'}</b>.`);
+        await sleep(1500);
+
+        if (listaAtual instanceof ListaDuplamenteEncadeada && noAnterior) {
+            setAnimationCaption(`Religando o ponteiro 'anterior' do nó <b>${noAnterior.valor}</b> para <b>${noAtual.valor}</b>.`);
+             await sleep(1500);
+        }
+
+        if(noAnterior) delete noAnterior.highlight;
+        if(noAtual) delete noAtual.highlight;
+        if(noProximo) delete noProximo.highlight;
+        
+        noAnterior = noAtual;
+        noAtual = noProximo;
+    }
+    
+    setAnimationCaption("Inversão completa!");
+    listaAtual.inverter();
+    desenharLista();
+    await sleep(2000);
+    setAnimationCaption();
+    document.getElementById('variable-display').style.display = 'none';
+}
+
+function drawCircularPointer(canvas, firstEl, lastEl) {
+    if (!firstEl || !lastEl) return;
+
+    const canvasRect = canvas.getBoundingClientRect();
+    const firstRect = firstEl.getBoundingClientRect();
+    const lastRect = lastEl.getBoundingClientRect();
+
+    const startX = lastRect.left + (lastRect.width / 2) - canvasRect.left;
+    const startY = lastRect.bottom - canvasRect.top - 20;
+    
+    const endX = firstRect.left + (firstRect.width / 2) - canvasRect.left;
+    const endY = firstRect.bottom - canvasRect.top - 20;
+
+    const controlY = startY + 60;
+
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute('class', 'circular-svg');
+    
+    const path = document.createElementNS(svgNS, "path");
+    const d = `M ${startX} ${startY} Q ${(startX + endX) / 2} ${controlY}, ${endX} ${endY}`;
+    path.setAttribute('d', d);
+    path.setAttribute('stroke', '#f9a8d4');
+    path.setAttribute('stroke-width', '3');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('marker-end', 'url(#arrowhead-circular)');
+
+    const defs = document.createElementNS(svgNS, 'defs');
+    const marker = document.createElementNS(svgNS, 'marker');
+    marker.setAttribute('id', 'arrowhead-circular');
+    marker.setAttribute('viewBox', '0 0 10 10');
+    marker.setAttribute('refX', '8');
+    marker.setAttribute('refY', '5');
+    marker.setAttribute('markerWidth', '6');
+    marker.setAttribute('markerHeight', '6');
+    marker.setAttribute('orient', 'auto-start-reverse');
+    const arrowPath = document.createElementNS(svgNS, 'path');
+    arrowPath.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+    arrowPath.setAttribute('fill', '#f9a8d4');
+    
+    marker.appendChild(arrowPath);
+    defs.appendChild(marker);
+    svg.appendChild(defs);
+    svg.appendChild(path);
+    
+    canvas.appendChild(svg);
+}
+
+
+function desenharLista(noDestacado = null, shiftConfig = null, animOverrides = {}) {
     const canvas = document.getElementById('list-canvas');
-    canvas.innerHTML = '';
+    if (!document.getElementById('variable-display') || document.getElementById('variable-display').style.display === 'none') {
+        canvas.innerHTML = '';
+    } else {
+        const listContainer = canvas.querySelector('.list-container');
+        if (listContainer) listContainer.remove();
+        const pendingNode = canvas.querySelector('.pending-node-container');
+        if (pendingNode) pendingNode.remove();
+    }
+
 
     if (!listaAtual) return;
+
+    if (!canvas.querySelector('.list-description')) {
+        const descriptionDiv = document.createElement('div');
+        descriptionDiv.className = 'list-description';
+        if (listaAtual instanceof ListaDuplamenteEncadeada) {
+            descriptionDiv.innerHTML = '<b>Lista Duplamente Encadeada:</b> Cada nó aponta para o <span>próximo</span> e para o <span>anterior</span>.';
+        } else if (listaAtual instanceof ListaCircular) {
+            descriptionDiv.innerHTML = '<b>Lista Circular:</b> O último nó aponta de volta para o <span>início</span>, criando um ciclo.';
+        } else {
+            descriptionDiv.innerHTML = '<b>Lista Simplesmente Encadeada:</b> Cada nó aponta apenas para o <span>próximo</span>.';
+        }
+        canvas.prepend(descriptionDiv);
+    }
+
 
     if (listaAtual.pendingNode) {
         const { valor, x, y, text } = listaAtual.pendingNode;
@@ -245,14 +458,19 @@ function desenharLista(noDestacado = null, shiftConfig = null) {
     let noAtual = listaAtual.inicio;
     let nodeIndex = 0;
     let elementCounter = 0;
-    while (noAtual !== null) {
+    
+    do {
         const nodeWrapper = document.createElement('div');
         nodeWrapper.className = 'node-wrapper';
         const noDiv = document.createElement('div');
         noDiv.className = 'list-node';
+        
+        if(noDestacado === noAtual) noDiv.classList.add('highlight');
+        if(highlightedElements.has(`node-${nodeIndex}`)) noDiv.classList.add('highlight-path');
+        if(noAtual && noAtual.highlight) noDiv.classList.add(noAtual.highlight);
+
         noDiv.textContent = noAtual.valor;
-        if (noAtual === noDestacado) noDiv.classList.add('highlight');
-        if (highlightedElements.has(`node-${nodeIndex}`)) noDiv.classList.add('highlight-path');
+        
         const indexDiv = document.createElement('div');
         indexDiv.className = 'node-index';
         indexDiv.textContent = nodeIndex;
@@ -264,45 +482,61 @@ function desenharLista(noDestacado = null, shiftConfig = null) {
         listContainer.appendChild(nodeWrapper);
         elementCounter++;
 
-        if (noAtual.proximo !== null) {
+        if (noAtual.proximo !== null && (nodeIndex < listaAtual.length - 1 || !(listaAtual instanceof ListaCircular))) {
             const setaDiv = document.createElement('div');
             setaDiv.className = 'list-pointer';
             if (highlightedElements.has(`pointer-${nodeIndex}`)) setaDiv.classList.add('highlight-path');
+            if (animOverrides.brokenPointer === nodeIndex) setaDiv.classList.add('pointer-broken');
             if (shiftConfig && elementCounter >= shiftConfig.shiftStartIndex) {
                 setaDiv.style.transform = `translateX(${shiftConfig.shiftDistance}px)`;
             }
             listContainer.appendChild(setaDiv);
             elementCounter++;
         }
+        
+        if (listaAtual instanceof ListaDuplamenteEncadeada && noAtual.anterior) {
+            const backPointerDiv = document.createElement('div');
+            backPointerDiv.className = 'back-pointer';
+            if (highlightedElements.has(`back-pointer-${nodeIndex}`)) {
+                backPointerDiv.classList.add('highlight-path-back');
+            }
+            nodeWrapper.appendChild(backPointerDiv);
+        }
+        
         noAtual = noAtual.proximo;
         nodeIndex++;
-    }
+    } while (noAtual !== null && noAtual !== listaAtual.inicio);
+
 
     if (listaAtual.length > 0) {
-        const finalPointer = document.createElement('div');
-        finalPointer.className = 'list-pointer';
-        if (highlightedElements.has(`pointer-${nodeIndex - 1}`)) {
-            finalPointer.classList.add('highlight-path');
-        }
-        if (shiftConfig && elementCounter >= shiftConfig.shiftStartIndex) {
-            finalPointer.style.transform = `translateX(${shiftConfig.shiftDistance}px)`;
-        }
-        listContainer.appendChild(finalPointer);
-        elementCounter++;
+        if (listaAtual instanceof ListaCircular) {
+            const allWrappers = listContainer.querySelectorAll('.node-wrapper');
+            const firstNodeEl = allWrappers[0];
+            const lastNodeEl = allWrappers[allWrappers.length - 1];
+            drawCircularPointer(canvas, firstNodeEl, lastNodeEl);
+        } else {
+            const finalPointer = document.createElement('div');
+            finalPointer.className = 'list-pointer';
+            if (shiftConfig && elementCounter >= shiftConfig.shiftStartIndex) {
+                finalPointer.style.transform = `translateX(${shiftConfig.shiftDistance}px)`;
+            }
+            listContainer.appendChild(finalPointer);
+            elementCounter++;
 
-        const nullEl = document.createElement('div');
-        nullEl.className = 'null-element';
-        nullEl.textContent = 'NULL';
-        if (shiftConfig && elementCounter >= shiftConfig.shiftStartIndex) {
-            nullEl.style.transform = `translateX(${shiftConfig.shiftDistance}px)`;
+            const nullEl = document.createElement('div');
+            nullEl.className = 'null-element';
+            nullEl.textContent = 'NULL';
+            if (shiftConfig && elementCounter >= shiftConfig.shiftStartIndex) {
+                nullEl.style.transform = `translateX(${shiftConfig.shiftDistance}px)`;
+            }
+            listContainer.appendChild(nullEl);
         }
-        listContainer.appendChild(nullEl);
     }
 }
 
 function alternarControles(habilitar) {
     animacaoEmExecucao = !habilitar;
-    document.querySelectorAll('#list-controls button, #list-controls input, .list-header button').forEach(el => {
+    document.querySelectorAll('#actions-container button, .list-header button').forEach(el => {
         el.disabled = !habilitar;
     });
 }
@@ -313,10 +547,23 @@ function escolherLista() {
         alert('Por favor, selecione um tipo de lista primeiro!');
         return;
     }
-    if (tipoListaInput.value === 'A') {
-        listaAtual = new ListaSimplesmenteEncadeada();
+    
+    switch(tipoListaInput.value) {
+        case 'A':
+            listaAtual = new ListaSimplesmenteEncadeada();
+            document.getElementById('buscarFimBtn').style.display = 'none';
+            break;
+        case 'B':
+            listaAtual = new ListaDuplamenteEncadeada();
+            document.getElementById('buscarFimBtn').style.display = 'inline-block';
+            break;
+        case 'C':
+            listaAtual = new ListaCircular();
+            document.getElementById('buscarFimBtn').style.display = 'none';
+            break;
     }
-    document.getElementById('list-controls').style.display = 'flex';
+
+    document.getElementById('actions-container').style.display = 'flex';
     desenharLista();
 }
 
@@ -369,11 +616,10 @@ async function acaoRemover() {
 
     alternarControles(false);
     canvas.classList.add('remove-mode');
-    const success = await animarRemocao(valor);
-    if (success) {
-        listaAtual.removerValor(valor);
-        desenharLista();
-    }
+    await animarRemocao(valor);
+    listaAtual.removerValor(valor); 
+    desenharLista();
+    
     canvas.classList.remove('remove-mode');
     alternarControles(true);
     inputValor.value = '';
@@ -400,6 +646,41 @@ async function acaoBuscar() {
     inputValor.value = '';
 }
 
+async function acaoBuscarReversa() {
+    if (animacaoEmExecucao || !listaAtual) return;
+    const canvas = document.getElementById('list-canvas');
+    const inputValor = document.getElementById('valorBuscar');
+    const valor = inputValor.value.trim();
+
+    if (!valor) {
+        alert('Por favor, insira um valor para buscar.');
+        return;
+    }
+
+    alternarControles(false);
+    canvas.classList.add('reverse-search-mode'); 
+
+    await animarBuscaReversa(valor);
+
+    canvas.classList.remove('reverse-search-mode');
+    alternarControles(true);
+    inputValor.value = '';
+}
+
+async function acaoInverter() {
+    if (animacaoEmExecucao || !listaAtual) return;
+    alternarControles(false);
+    await animarInversao();
+    alternarControles(true);
+}
+
+async function acaoLimpar() {
+    if (animacaoEmExecucao || !listaAtual) return;
+    alternarControles(false);
+    await animarLimpeza();
+    alternarControles(true);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const escolherBtn = document.querySelector('.list-header button');
     if (escolherBtn) escolherBtn.addEventListener('click', escolherLista);
@@ -410,8 +691,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const removerBtn = document.querySelector('.control-group:nth-child(2) button');
     if (removerBtn) removerBtn.addEventListener('click', acaoRemover);
 
-    const buscarBtn = document.querySelector('.control-group:nth-child(3) button');
+    const buscarBtn = document.querySelector('.control-group:nth-child(3) button:first-child');
     if (buscarBtn) buscarBtn.addEventListener('click', acaoBuscar);
+
+    const buscarFimBtn = document.getElementById('buscarFimBtn');
+    if(buscarFimBtn) buscarFimBtn.addEventListener('click', acaoBuscarReversa);
+
+    const inverterBtn = document.getElementById('inverterBtn');
+    if(inverterBtn) inverterBtn.addEventListener('click', acaoInverter);
+
+    const limparBtn = document.getElementById('limparBtn');
+    if(limparBtn) limparBtn.addEventListener('click', acaoLimpar);
 
     console.log("Simulador de lista pronto e eventos conectados.");
 });

@@ -1,4 +1,3 @@
-// Variáveis de estado global
 let estadosArvore = [];
 let indiceAtual = -1;
 let animacaoPausada = false;
@@ -7,8 +6,6 @@ let animationController = null;
 let animationSpeedMultiplier = 1.0;
 let stepTimeoutId = null; 
 let isStepping = false;
-
-// --- FUNÇÕES DE CONTROLE DA UI ---
 
 function disableAnimationControls() {
     document.querySelectorAll('button, input').forEach(el => el.disabled = true);
@@ -21,8 +18,6 @@ function disableAnimationControls() {
 function enableAllControls() {
     document.querySelectorAll('button, input').forEach(el => el.disabled = false);
 }
-
-// --- FUNÇÕES DE CONTROLE DE ANIMAÇÃO CENTRALIZADAS ---
 
 function atualizarBotaoPausa() {
     const pauseBtn = document.getElementById("pause-btn");
@@ -68,9 +63,6 @@ function finalizarAnimacao(mensagemFinal = '', sucesso = true) {
 
     atualizarBotaoPausa();
 }
-
-
-// --- LÓGICA PRINCIPAL ---
 
 $(document).ready(() => {
     const speedSlider = document.getElementById('speed-slider');

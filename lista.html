@@ -52,26 +52,35 @@
                 <legend>Tipo de Lista</legend>
                 <div class="radio-group">
                     <input type="radio" name="tipo_lista" id="simplesE" value="A"><label for="simplesE">Simplesmente Encadeada</label>
-                    <input type="radio" name="tipo_lista" id="duplaE" value="B" disabled><label for="duplaE">Duplamente Encadeada</label>
-                    <input type="radio" name="tipo_lista" id="circular" value="C" disabled><label for="Circular">Circular</label>
+                    <input type="radio" name="tipo_lista" id="duplaE" value="B"><label for="duplaE">Duplamente Encadeada</label>
+                    <input type="radio" name="tipo_lista" id="circular" value="C"><label for="circular">Circular</label>
                 </div>
                 <button class="btn btn-primary">Escolher Lista</button>
             </fieldset>
         </header>
         
-        <div id="list-controls" class="list-controls" style="display: none;">
-            <div class="control-group">
-                <input type="text" id="valorInserir" class="input-field" placeholder="Valor">
-                <input type="text" id="posicaoInserir" class="input-field" placeholder="Posição (opcional)">
-                <button class="btn btn-success">Inserir</button>
+        <!-- NOVO: Container para todas as ações -->
+        <div id="actions-container" class="actions-container" style="display: none;">
+            <div id="list-controls" class="list-controls">
+                <div class="control-group">
+                    <input type="text" id="valorInserir" class="input-field" placeholder="Valor">
+                    <input type="text" id="posicaoInserir" class="input-field" placeholder="Posição (opcional)">
+                    <button class="btn btn-success">Inserir</button>
+                </div>
+                <div class="control-group">
+                    <input type="text" id="valorRemover" class="input-field" placeholder="Valor a remover">
+                    <button class="btn btn-danger">Remover</button>
+                </div>
+                <div class="control-group">
+                    <input type="text" id="valorBuscar" class="input-field" placeholder="Valor a buscar">
+                    <button class="btn btn-primary">Buscar</button>
+                    <button id="buscarFimBtn" class="btn btn-secondary" style="display: none;">Buscar do Fim</button>
+                </div>
             </div>
-            <div class="control-group">
-                <input type="text" id="valorRemover" class="input-field" placeholder="Valor a remover">
-                <button class="btn btn-danger">Remover</button>
-            </div>
-            <div class="control-group">
-                <input type="text" id="valorBuscar" class="input-field" placeholder="Valor a buscar">
-                <button class="btn btn-primary">Buscar</button>
+    
+            <div id="list-utils" class="list-utils">
+                <button id="inverterBtn" class="btn btn-secondary">Inverter Lista</button>
+                <button id="limparBtn" class="btn btn-danger">Limpar Lista</button>
             </div>
         </div>
 

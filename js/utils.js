@@ -18,7 +18,6 @@ function setSubtitle(text = '') {
 }
 
 function salvarEstado() {
-    // Garante que não há estados futuros se voltamos no tempo e inserimos um novo
     if (indiceAtual < estadosArvore.length - 1) {
         estadosArvore = estadosArvore.slice(0, indiceAtual + 1);
     }

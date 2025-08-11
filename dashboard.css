@@ -3,34 +3,34 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: #f3f4f6; 
     display: flex;
-    font-size: 0.8rem; /* Tamanho da fonte base reduzido */
+    font-size: 0.8rem;
 }
 
 .sidebar {
     background-color: #1a202c;
     color: white;
-    width: 12.8rem; /* Reduzido de 16rem */
+    width: 12.8rem; 
     min-height: 100vh;
-    padding: 0.8rem; /* Reduzido de 1rem */
+    padding: 0.8rem; 
     flex-shrink: 0;
 }
 
 .sidebar-header {
     display: flex;
     align-items: center;
-    margin-bottom: 1.6rem; /* Reduzido de 2rem */
+    margin-bottom: 1.6rem;
 }
 
 .sidebar-header h1 {
-    font-size: 1rem; /* Reduzido de 1.25rem */
+    font-size: 1rem; 
     font-weight: 700; 
 }
 
 .sidebar-logo {
     color: #48bb78; 
-    height: 1.6rem; /* Reduzido de 2rem */
-    width: 1.6rem; /* Reduzido de 2rem */
-    margin-right: 0.6rem; /* Reduzido de 0.75rem */
+    height: 1.6rem; 
+    width: 1.6rem; 
+    margin-right: 0.6rem;
     flex-shrink: 0;
 }
 
@@ -40,13 +40,13 @@ body {
 }
 
 .sidebar nav li {
-    margin-bottom: 0.4rem; /* Reduzido de 0.5rem */
+    margin-bottom: 0.4rem; 
 }
 
 .sidebar-link {
     display: flex;
     align-items: center;
-    padding: 0.6rem; /* Reduzido de 0.75rem */
+    padding: 0.6rem; 
     border-radius: 0.5rem; 
     text-decoration: none;
     color: white;
@@ -73,26 +73,26 @@ body {
 }
 
 .sidebar-link svg {
-    height: 1rem; /* Reduzido de 1.25rem */
-    width: 1rem; /* Reduzido de 1.25rem */
-    margin-right: 0.6rem; /* Reduzido de 0.75rem */
+    height: 1rem; 
+    width: 1rem; 
+    margin-right: 0.6rem; 
     flex-shrink: 0;
 }
 
 .main-content {
     flex: 1;
-    padding: 1.6rem; /* Reduzido de 2rem */
+    padding: 1.6rem; 
 }
 
 .main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.6rem; /* Reduzido de 2rem */
+    margin-bottom: 1.6rem; 
 }
 
 .main-header h2 {
-    font-size: 1.5rem; /* Reduzido de 1.875rem */
+    font-size: 1.5rem; 
     font-weight: 700;
     color: #1f2937; 
 }
@@ -102,13 +102,13 @@ body {
 }
 
 .search-input {
-    padding-left: 2rem; /* Reduzido de 2.5rem */
-    padding-right: 0.8rem; /* Reduzido de 1rem */
-    padding-top: 0.4rem; /* Reduzido de 0.5rem */
-    padding-bottom: 0.4rem; /* Reduzido de 0.5rem */
+    padding-left: 2rem; 
+    padding-right: 0.8rem; 
+    padding-top: 0.4rem; 
+    padding-bottom: 0.4rem;
     border: 1px solid #d1d5db; 
     border-radius: 9999px;
-    width: 12.8rem; /* Reduzido de 16rem */
+    width: 12.8rem; 
     font-size: 0.8rem;
 }
 
@@ -119,18 +119,18 @@ body {
 
 .search-icon {
     position: absolute;
-    left: 0.6rem; /* Reduzido de 0.75rem */
+    left: 0.6rem; 
     top: 50%;
     transform: translateY(-50%);
-    height: 1rem; /* Reduzido de 1.25rem */
-    width: 1rem; /* Reduzido de 1.25rem */
+    height: 1rem; 
+    width: 1rem; 
     color: #9ca3af; 
 }
 
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: 1.6rem; /* Reduzido de 2rem */
+    gap: 1.6rem; 
 }
 
 @media (min-width: 768px) {
@@ -147,7 +147,7 @@ body {
 .card {
     display: block;
     background-color: white;
-    padding: 1.2rem; /* Reduzido de 1.5rem */
+    padding: 1.2rem; 
     border-radius: 0.75rem; 
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); 
     transition: box-shadow 0.3s ease-in-out;
@@ -171,13 +171,13 @@ body {
 .card-header {
     display: flex;
     align-items: center;
-    margin-bottom: 0.8rem; /* Reduzido de 1rem */
+    margin-bottom: 0.8rem;
 }
 
 .card-icon-wrapper {
-    padding: 0.6rem; /* Reduzido de 0.75rem */
+    padding: 0.6rem; 
     border-radius: 9999px; 
-    margin-right: 0.8rem; /* Reduzido de 1rem */
+    margin-right: 0.8rem; 
     background-color: #d1fae5;
 }
 
@@ -186,8 +186,8 @@ body {
 }
 
 .card-header svg {
-    height: 1.2rem; /* Reduzido de 1.5rem */
-    width: 1.2rem; /* Reduzido de 1.5rem */
+    height: 1.2rem; 
+    width: 1.2rem; 
     color: #059669; 
 }
 
@@ -196,7 +196,7 @@ body {
 }
 
 .card-header h3 {
-    font-size: 1rem; /* Reduzido de 1.25rem */
+    font-size: 1rem; 
     font-weight: 600; 
     color: #1f2937; 
 }
