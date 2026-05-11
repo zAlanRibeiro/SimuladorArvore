@@ -259,6 +259,16 @@ class ListaCircular extends ListaSimplesmenteEncadeada {
         return true;
     }
 
+    buscar(valor) {
+    if (!this.inicio) return null;
+    let atual = this.inicio;
+    for (let i = 0; i < this.length; i++) {
+        if (atual.valor == valor) return atual;
+        atual = atual.proximo;
+    }
+    return null;
+    }
+
     removerValor(valor) {
         if (!this.inicio) return;
         let noAtual = this.inicio;

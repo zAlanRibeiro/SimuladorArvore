@@ -694,7 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const removerBtn = document.querySelector('.control-group:nth-child(2) button');
     if (removerBtn) removerBtn.addEventListener('click', acaoRemover);
 
-    const buscarBtn = document.querySelector('.control-group:nth-child(3) button:first-child');
+    const buscarBtn = document.getElementById('btnBuscar');
     if (buscarBtn) buscarBtn.addEventListener('click', acaoBuscar);
 
     const buscarFimBtn = document.getElementById('buscarFimBtn');
