@@ -1,3 +1,13 @@
+:root {
+    --primary-green: #48bb78;
+    --dark-bg: #1a202c;
+    --light-gray: #f3f4f6;
+    --sidebar-width: 12.8rem;
+}
+
+.sidebar-logo { color: var(--primary-green); }
+.sidebar { width: var(--sidebar-width); background-color: var(--dark-bg); }
+
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;

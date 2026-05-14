@@ -1,0 +1,149 @@
+/* avaliacao.css */
+
+/* Container principal para alinhar todos os elementos da página */
+.evaluation-container {
+    max-width: 800px; /* Largura definida para alinhar com o bloco de informações */
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os filhos horizontalmente */
+}
+
+.evaluation-intro {
+    font-size: 1rem !important;
+    color: #4b5563;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* Grid de Cards centralizado */
+.cards-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+/* Estilização dos Cards herdando do seu padrão visual */
+.card {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    width: 280px;
+    border: 1px solid transparent;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    border-color: var(--primary-green);
+}
+
+.card-teacher:hover {
+    border-color: var(--primary-blue);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.card-icon-wrapper {
+    padding: 0.6rem;
+    border-radius: 9999px;
+    margin-right: 0.8rem;
+    background-color: #d1fae5; /* Verde claro aluno */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-blue {
+    background-color: #dbeafe !important; /* Azul claro professor */
+}
+
+.card-header svg {
+    height: 1.2rem;
+    width: 1.2rem;
+    color: var(--primary-green);
+}
+
+.icon-blue svg {
+    color: var(--primary-blue) !important;
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.card p {
+    color: #4b5563;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Bloco "Por que sua avaliação importa?" centralizado e com bordas laterais */
+.info-adicional {
+    width: 100%;
+    padding: 2.5rem;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    
+    /* Bordas verdes dos dois lados */
+    border-left: 5px solid var(--primary-green);
+    border-right: 5px solid var(--primary-green);
+    
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    box-sizing: border-box;
+
+    margin-top: 7rem;
+}
+
+.info-adicional h3 {
+    margin-top: 0;
+    color: var(--dark-bg);
+    font-size: 1.2rem;
+}
+
+.info-adicional p {
+    color: #6b7280;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 1rem auto;
+}
+
+/* Badges com bordas laterais verdes */
+.badges-projeto {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.badge {
+    background-color: var(--light-gray);
+    padding: 0.4rem 1.2rem;
+    border-radius: 4px; /* Mais quadrado para enfatizar as bordas */
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--dark-bg);
+    
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
